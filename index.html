@@ -5560,6 +5560,44 @@ body.overview .overview-label{display:block}
   max-width:32ch;
 }
 
+/* Mobile landscape: relaxar 16:9 e apertar safe area para aproveitar a tela */
+@media (orientation:landscape) and (max-height:520px){
+  :root{--safe:4vw}
+  .slide{
+    width:100vw;height:100vh;
+    box-shadow:none;
+  }
+  .stage{background:var(--bone)}
+}
+
+/* Hint flutuante para mobile: "melhor experiencia em desktop" */
+.mobile-hint{
+  position:fixed;left:50%;bottom:2.4vh;
+  transform:translateX(-50%) translateY(10px);
+  z-index:9998;
+  display:none;align-items:center;gap:1.2em;
+  padding:.9em 1.4em;
+  background:rgba(20,17,13,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-radius:999px;
+  font-family:var(--sans);font-weight:500;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.92);
+  opacity:0;pointer-events:none;
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);
+}
+.mobile-hint[data-visible="true"]{
+  opacity:1;transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+.mobile-hint__close{
+  background:none;border:none;color:rgba(255,255,255,.75);
+  font-size:18px;line-height:1;cursor:pointer;padding:0 .2em;
+}
+.mobile-hint__close:hover{color:#fff}
+@media (orientation:landscape) and (max-height:520px){
+  .mobile-hint{display:inline-flex}
+}
+
 /* ============ RECURSOS DE APRESENTACAO ============
    Controles persistentes para o apresentador: fullscreen toggle,
    blackout/whiteout, help overlay, jump-to-slide indicator.
@@ -7379,6 +7417,12 @@ body.overview .fs-toggle{display:none}
   <span class="jump-number">0</span>
 </div>
 
+<!-- Hint flutuante para mobile: melhor experiencia em desktop -->
+<div class="mobile-hint" role="status" aria-live="polite" data-visible="false">
+  <span>Melhor em desktop ou tablet</span>
+  <button class="mobile-hint__close" type="button" aria-label="Fechar">&times;</button>
+</div>
+
 <!-- Help overlay -->
 <div class="help-overlay" role="dialog" aria-modal="true" aria-labelledby="help-title">
   <div class="help-card">
@@ -7420,10 +7464,31 @@ body.overview .fs-toggle{display:none}
   const helpCard=document.querySelector('.help-card');
   const jumpInd=document.querySelector('.jump-indicator');
   const jumpNum=document.querySelector('.jump-indicator .jump-number');
+  const mobileHint=document.querySelector('.mobile-hint');
   let i=0;
   let hudTimer=null;
   let jumpBuf='';
   let jumpTimer=null;
+
+  // Esconder fullscreen toggle se API nao suportada (iOS Safari)
+  const supportsFs=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
+  if(!supportsFs && fsToggle){fsToggle.style.display='none';}
+
+  // Hint mobile: mostrar por 4s ao abrir em tela pequena landscape
+  if(mobileHint){
+    const mq=window.matchMedia('(orientation:landscape) and (max-height:520px)');
+    const showHint=()=>{
+      if(!mq.matches) return;
+      setTimeout(()=>{
+        mobileHint.setAttribute('data-visible','true');
+        setTimeout(()=>mobileHint.setAttribute('data-visible','false'),4500);
+      },800);
+    };
+    showHint();
+    mobileHint.querySelector('.mobile-hint__close')?.addEventListener('click',()=>{
+      mobileHint.setAttribute('data-visible','false');
+    });
+  }
 
   totalEl.textContent=String(total).padStart(2,'0');
 
