@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+sim<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
@@ -57,16 +57,23 @@ html,body{
 }
 .slide{
   position:absolute;
-  top:50%;left:50%;
-  width:min(100vw, calc(100vh * 16 / 9));
-  height:min(100vh, calc(100vw * 9 / 16));
-  transform:translate(-50%,-50%);
+  top:0;left:0;
+  width:100vw;
+  height:100vh;
   overflow:hidden;
   background:var(--grafite);
   box-shadow:0 40px 120px rgba(0,0,0,.6);
   opacity:0;
   pointer-events:none;
   transition:opacity .9s var(--ease-out);
+}
+/* Modo letterbox preserva o 16:9 estrito · ative com `body.locked-169` se algum
+   slide específico precisar voltar ao comportamento antigo. */
+body.locked-169 .slide{
+  top:50%;left:50%;
+  width:min(100vw, calc(100vh * 16 / 9));
+  height:min(100vh, calc(100vw * 9 / 16));
+  transform:translate(-50%,-50%);
 }
 .slide.active{
   opacity:1;
@@ -346,28 +353,150 @@ html,body{
   mix-blend-mode:soft-light;
 }
 
-/* .fx-oliveira-salao · slide 01 (capa) · salão central, oliveira em contexto
-   arquitetônico, luz natural quente via claraboia/painéis. Grain 12%, warm
-   discreto (luz de âmbar), vignette orgânica, contraste levemente aumentado
-   para sustentar a profundidade do salão. */
-.fx-oliveira-salao{position:relative;overflow:hidden;isolation:isolate}
-.fx-oliveira-salao > img{
+/* .solo-hero · slides "ponto alto" · uma única fotografia em destaque
+   pleno, sem rail, sem rótulos competindo. Tratamento fotográfico
+   cinematográfico universal: micro-grain orgânico, halação warm sutil
+   centrada (luz interna), vinheta oval suave, e scrim discreto no
+   rodapé para garantir legibilidade da assinatura em qualquer cena
+   (clara ou escura). Assinatura editorial em italic display tracking
+   alto, marfim semi-translúcido com sombra para contraste leve. */
+.slide.solo-hero{padding:0;background:#0a0907}
+.solo-hero .solo-photo{position:absolute;inset:0;margin:0;overflow:hidden;isolation:isolate}
+.solo-hero .solo-photo > img{
   width:100%;height:100%;object-fit:cover;
-  filter:saturate(1.04) contrast(1.06) brightness(.95);
+  filter:saturate(1.05) contrast(1.07) brightness(.97);
+  transform:scale(1.012);
 }
-.fx-oliveira-salao::before{
+.solo-hero .solo-photo::before{
   content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size:220px 220px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:240px 240px;
   mix-blend-mode:overlay;
-  opacity:.12;
+  opacity:.075;
 }
-.fx-oliveira-salao::after{
+.solo-hero .solo-photo::after{
   content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
   background:
-    radial-gradient(ellipse 60% 50% at 50% 35%, rgba(255,235,200,.14) 0%, transparent 60%),
-    radial-gradient(ellipse 85% 80% at 50% 50%, transparent 60%, rgba(0,0,0,.14) 100%);
+    radial-gradient(ellipse 44% 32% at 50% 46%, rgba(255,224,180,.16) 0%, rgba(255,224,180,0) 70%),
+    radial-gradient(ellipse 95% 88% at 50% 52%, transparent 56%, rgba(18,14,8,.22) 100%);
   mix-blend-mode:soft-light;
+}
+/* Bottom scrim · alpha real (sem mix-blend) · garante leitura da assinatura */
+.solo-hero::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:20vh;
+  z-index:4;pointer-events:none;
+  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.32) 100%);
+}
+
+/* Assinatura editorial · canto inferior centralizada · italic display */
+.solo-hero .solo-sig{
+  position:absolute;
+  left:50%;transform:translateX(-50%);
+  bottom:4vh;
+  z-index:5;
+  display:inline-flex;align-items:center;gap:1.6em;
+  color:rgba(250,247,238,.92);
+  text-shadow:0 1px 3px rgba(0,0,0,.45), 0 0 24px rgba(0,0,0,.18);
+  pointer-events:none;
+}
+.solo-hero .solo-sig-rule{
+  display:inline-block;
+  width:clamp(28px,4vw,68px);height:1px;
+  background:linear-gradient(90deg, rgba(250,247,238,0) 0%, rgba(250,247,238,.7) 50%, rgba(250,247,238,0) 100%);
+}
+.solo-hero .solo-sig-text{
+  font-family:var(--display, 'Cormorant Garamond', serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(13px,1.05vw,20px);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.solo-hero .solo-sig-dot{
+  display:inline-block;margin:0 .4em;
+  font-style:normal;
+  color:rgba(250,247,238,.6);
+}
+
+/* .solo-trio · modifier de .solo-hero · grid asymétrico de 3 fotografias
+   preenchendo 100% da tela. Hero à esquerda em full-height, 2 apoios
+   empilhados à direita. Hairline gap entre tiles para respiração. Mesmo
+   vocabulário cinema: color grade direto na imagem, grain sobre o grid,
+   scrim no rodapé herdado de .solo-hero, assinatura editorial centralizada. */
+/* Base do grid e tiles · compartilhado entre solo-trio, solo-duo e qualquer
+   modifier futuro. Os modifiers só precisam definir grid-template-* e a
+   posição de cada tile. */
+.solo-hero .solo-grid{
+  position:absolute;inset:0;
+  display:grid;
+  gap:clamp(3px,.32vw,7px);
+  background:#0a0907;
+}
+.solo-hero .solo-tile{
+  position:relative;margin:0;overflow:hidden;isolation:isolate;
+}
+.solo-hero .solo-tile > img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.05) contrast(1.07) brightness(.97);
+}
+
+/* Modifier: solo-trio · 1 hero esquerda full-height + 2 apoios direita */
+.solo-hero.solo-trio .solo-grid{
+  grid-template-columns: 1.62fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.solo-hero.solo-trio .solo-tile-hero{grid-column:1;grid-row:1 / span 2}
+.solo-hero.solo-trio .solo-tile:nth-of-type(2){grid-column:2;grid-row:1}
+.solo-hero.solo-trio .solo-tile:nth-of-type(3){grid-column:2;grid-row:2}
+
+/* Modifier: solo-duo · 2 fotos lado a lado em colunas iguais */
+.solo-hero.solo-duo .solo-grid{
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr;
+}
+.solo-hero.solo-duo .solo-tile:nth-of-type(1){grid-column:1;grid-row:1}
+.solo-hero.solo-duo .solo-tile:nth-of-type(2){grid-column:2;grid-row:1}
+
+/* s08 · Crio e Termo · color correction por tile.
+   Tile 1 (wide com luz da porta estourando): contraste mais alto + brightness
+   reduzido para domar os highlights e ancorar a profundidade.
+   Tile 2 (tall em madeira escura): leve lift de brightness para não fechar. */
+.slide#s08.solo-duo .solo-tile:nth-of-type(1) > img{
+  filter:saturate(1.06) contrast(1.14) brightness(.88);
+  /* Framing curado · empurra o foco para a metade inferior (ofurô + maca de
+     massagem ao fundo + roupões) e dá zoom de 18% para tirar o teto da cena. */
+  object-position:50% 78%;
+  transform:scale(1.18);
+  transform-origin:50% 78%;
+}
+.slide#s08.solo-duo .solo-tile:nth-of-type(2) > img{
+  filter:saturate(1.06) contrast(1.06) brightness(1.02);
+}
+/* Vinheta extra apenas no tile 1 para colocar peso nos highlights centrais */
+.slide#s08.solo-duo .solo-tile:nth-of-type(1)::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 60% 50% at 50% 56%, rgba(20,12,4,0) 0%, rgba(20,12,4,.20) 100%);
+  mix-blend-mode:multiply;
+}
+/* s09 · Massagem · framing curado.
+   Render original tem maca no terço inferior e teto-estrelado no topo.
+   Em viewport 16:9 com object-fit:cover, o center default cortava metade
+   da maca. Empurra o foco para baixo e aplica zoom suave de 8% para
+   enxugar o teto, preservando a presença das prateleiras de óleo. */
+.slide#s09 .solo-photo > img{
+  object-position:50% 82%;
+  transform:scale(1.08);
+  transform-origin:50% 82%;
+}
+/* grain orgânico sobre o grid inteiro · compartilhado entre todos os modifiers */
+.solo-hero.solo-trio::before,
+.solo-hero.solo-duo::before{
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:240px 240px;
+  mix-blend-mode:overlay;
+  opacity:.07;
 }
 
 /* .fx-hall-brises · slide 01 (capa) · hall de entrada, brises de madeira
@@ -567,45 +696,148 @@ html,body{
 }
 
 /* ============ SLIDE 02 · QUEM SOMOS ============ */
+/* s02 · Slide de abertura · split asymétrico com peso na fotografia.
+   A foto (claraboia + oliveira + jardins de jacarandá) é o protagonista,
+   o texto sustenta a hierarquia editorial à esquerda. Filete aurum vertical
+   entre as colunas, tratamento cinema com halação warm na claraboia,
+   vinheta inferior contida, micro-grain. Folio "01 — Abertura" como
+   carimbo editorial no rodapé do col-text. */
 .slide.light{background:var(--bone);color:var(--grafite)}
 .slide.light .split{
   position:absolute;inset:0;
   display:grid;
-  grid-template-columns:46% 54%;
+  grid-template-columns:38% 62%;
 }
 .slide.light .col-text{
   position:relative;
-  padding:7vh var(--safe);
+  padding:7.4vh var(--safe) 6.6vh;
   display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-  gap:3vh;
+  gap:3.2vh;
   background:var(--bone);
+  z-index:1;
 }
 .slide.light .col-text > *{align-self:flex-start;width:100%}
+/* Filete vertical aurum entre as duas colunas, fade no topo e na base */
+.slide.light .col-text::after{
+  content:'';
+  position:absolute;
+  top:9vh;bottom:9vh;right:-1px;
+  width:1px;
+  background:linear-gradient(180deg, transparent 0%, rgba(184,168,122,.45) 14%, rgba(184,168,122,.45) 86%, transparent 100%);
+  z-index:5;
+}
 .slide.light .col-text > .eyebrow{
-  gap:.8vw;
-  letter-spacing:.24em;
+  gap:1.1vw;
+  letter-spacing:.34em;
+  font-size:clamp(11px,.92vw,16px);
 }
-.slide.light .col-text > .eyebrow .dot{
-  color:var(--oliva-clara);
-  opacity:.7;
+.slide.light .col-text > .eyebrow .rule{
+  display:inline-block;
+  width:clamp(28px,3vw,52px);height:1px;
+  background:rgba(184,168,122,.7);
+  flex:none;
 }
+
+/* Display title · respirado, mais peso para impacto de abertura */
+.slide.light h1.display-title{
+  font-size:clamp(48px,5.4vw,108px);
+  line-height:.98;
+  letter-spacing:-.005em;
+  margin-top:.4vh;
+}
+
+/* Lead · aumenta o respiro */
+.slide.light p.lead{
+  max-width:32ch;
+  font-size:clamp(15px,1.32vw,22px);
+  line-height:1.55;
+}
+
+/* Pillars · 3 colunas com filete superior aurum em rastro curto */
+.slide.light dl.pillars{
+  grid-template-columns:1fr 1fr 1fr;
+  gap:1.1vw 1.4vw;
+  padding-top:2.6vh;
+  border-top:none;
+  position:relative;
+}
+.slide.light dl.pillars::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg, rgba(184,168,122,.7) 0%, rgba(184,168,122,.7) 14%, rgba(107,106,78,.16) 14%, rgba(107,106,78,.16) 100%);
+}
+.slide.light dl.pillars dt{
+  font-size:clamp(20px,1.95vw,38px);
+  margin-bottom:.6vh;
+}
+.slide.light dl.pillars dd{
+  font-size:clamp(13px,1.05vw,17px);
+  line-height:1.4;
+}
+
+/* Folio editorial · "01 — Abertura" no rodapé do col-text */
+.slide.light .s02-folio{
+  position:absolute;
+  bottom:5vh;left:var(--safe);
+  display:inline-flex;align-items:center;gap:.95em;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(10px,.78vw,13px);
+  letter-spacing:.42em;
+  text-transform:uppercase;
+  color:var(--oliva, #6B6A4E);
+  margin:0;width:auto;
+}
+.slide.light .s02-folio-num{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:1.55em;
+  letter-spacing:.04em;
+  color:var(--fc-aurum, #B8A87A);
+  text-transform:none;
+  line-height:1;
+}
+.slide.light .s02-folio-rule{
+  display:inline-block;width:2.4em;height:1px;
+  background:var(--fc-aurum, #B8A87A);
+  opacity:.6;
+}
+
+/* Coluna da foto · cinema cru: skylight halado, vinheta contida, grain */
 .slide.light .col-img{
-  position:relative;overflow:hidden;background:var(--tinta);
+  position:relative;overflow:hidden;
+  background:#1a1a14;
+  isolation:isolate;
 }
-.slide.light .col-img img{
-  width:100%;height:100%;object-fit:cover;object-position:center 55%;
-  filter:saturate(1.03) contrast(1.05) brightness(.94);
-  transform:scale(1);
-  transition:transform 10s ease-out;
+.slide.light .col-img > img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:62% 38%;  /* prioriza claraboia + oliveira no quadrante superior direito */
+  filter:saturate(1.06) contrast(1.08) brightness(.965);
+  transform:scale(1.012);
+  transition:transform 10s var(--ease-out);
 }
-.slide.light.active .col-img img{transform:scale(1)}
+.slide.light.active .col-img > img{transform:scale(1.018)}
+/* Grain orgânico */
+.slide.light .col-img::before{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:240px 240px;
+  mix-blend-mode:overlay;
+  opacity:.075;
+}
+/* Color grade · halação warm na claraboia (canto superior direito) +
+   vinheta inferior + edge fade na borda esquerda para casar com o bone do texto */
 .slide.light .col-img::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
+  content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
   background:
-    linear-gradient(to right, rgba(244,240,232,.22) 0%, transparent 18%),
-    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.22) 100%);
-  mix-blend-mode:multiply;
+    radial-gradient(ellipse 38% 30% at 72% 18%, rgba(255,228,180,.24) 0%, rgba(255,228,180,0) 65%),
+    radial-gradient(ellipse 100% 88% at 50% 58%, transparent 56%, rgba(18,14,8,.22) 100%),
+    linear-gradient(to right, rgba(244,240,232,.22) 0%, rgba(244,240,232,0) 14%);
+  mix-blend-mode:soft-light;
 }
+
+/* Frame-meta e folio-l · removidos do uso atual mas estilo mantido caso voltem */
 .slide.light .frame-meta{
   max-width:38vw;
   font-size:clamp(9px,.72vw,12px);
@@ -872,11 +1104,6 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
 .slide.arch.pico{grid-template-columns:76fr 24fr}
 .slide.arch.pico .media .bg{
   filter:saturate(1.0) contrast(1.02) brightness(1.0);
-}
-.slide.arch.pico .fx-oliveira-salao::after{
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 35%, rgba(255,235,200,.08) 0%, transparent 60%),
-    radial-gradient(ellipse 85% 80% at 50% 50%, transparent 60%, rgba(0,0,0,.06) 100%);
 }
 .slide.arch.pico .arch-rail{padding:7vh 2.2vw 6vh}
 .slide.arch.pico .rail-body{padding:3vh 0}
@@ -2262,32 +2489,19 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
 /* ============ SLIDE 26 · FOUNDERS · documento unificado (escada + direitos) ============ */
 .slide.founders-documento{
   background:var(--fc-bone);
-  padding:3.4vh 5vw 3vh;
-  display:grid;grid-template-rows:auto 1fr auto;gap:1.2vh;
+  padding:3vh 4.6vw 3vh;
+  display:grid;grid-template-rows:auto 1fr auto;gap:1.4vh;
   overflow:hidden;color:var(--fc-ink);
 }
 
 .fd-masthead{
-  display:grid;grid-template-columns:1fr auto 1fr;
-  align-items:center;gap:2vw;
-  padding-top:.8vh;
-}
-.fd-masthead-left{
-  font-family:var(--sans);font-weight:500;
-  font-size:clamp(10px,.78vw,13px);
-  letter-spacing:.32em;text-transform:uppercase;
-  color:var(--fc-ink-soft);
-}
-.fd-masthead-right{
-  font-family:var(--sans);font-weight:500;
-  font-size:clamp(10px,.78vw,13px);
-  letter-spacing:.32em;text-transform:uppercase;
-  color:var(--fc-aurum);
-  text-align:right;
+  display:flex;flex-direction:column;align-items:center;
+  gap:.9vh;
+  padding-top:.2vh;
 }
 .fd-title{
   font-family:var(--display);font-weight:300;
-  font-size:clamp(52px,5.2vw,98px);
+  font-size:clamp(34px,3.6vw,62px);
   line-height:1.02;letter-spacing:-.008em;
   color:var(--fc-ink);
   text-align:center;margin:0;padding:0;
@@ -2297,78 +2511,84 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   font-style:normal;color:var(--fc-aurum);font-weight:300;
   margin:0 .08em;
 }
-.fd-masthead.fd-masthead-clean{
-  grid-template-columns:1fr;
-  justify-items:center;
-  padding-top:.4vh;padding-bottom:.4vh;
-  display:flex;flex-direction:column;align-items:center;gap:.9vh;
-}
-.fd-eyebrow{
+.fd-subnote{
+  display:flex;align-items:center;justify-content:center;gap:.7vw;
   font-family:var(--sans);font-weight:500;
-  font-size:clamp(13px,1.05vw,20px);
-  letter-spacing:.42em;text-transform:uppercase;
+  font-size:clamp(11px,.82vw,14px);
+  letter-spacing:.34em;text-transform:uppercase;
   color:var(--fc-aurum);
-  display:inline-flex;align-items:center;gap:.8vw;
+  text-align:center;
 }
-.fd-filete{
-  width:clamp(120px,14vw,280px);height:1px;
-  margin:.6vh auto 0;
-  background:linear-gradient(90deg,transparent,var(--fc-aurum),transparent);
-  opacity:.85;
+.fd-subnote .sep{
+  display:inline-block;width:3px;height:3px;border-radius:50%;
+  background:var(--fc-aurum-soft);
 }
 
 .fd-body{
-  display:grid;grid-template-columns:1fr 1px 1fr;
+  display:grid;grid-template-columns:1fr 1px 1.15fr;
   gap:0 3vw;
-  padding:1.2vh 0;
+  padding:1.4vh 0 0;
   border-top:1px solid var(--fc-hair-soft);
-  border-bottom:1px solid var(--fc-hair-soft);
   min-height:0;overflow:hidden;
 }
 .fd-divider{display:block;background:var(--fc-hair-soft);width:1px;height:100%}
 .fd-column{
-  display:flex;flex-direction:column;gap:1.4vh;
+  display:flex;flex-direction:column;gap:1.2vh;
   min-width:0;min-height:0;
 }
 .fd-column-head{
   font-family:var(--sans);font-weight:500;
-  font-size:clamp(12px,.95vw,17px);
-  letter-spacing:.4em;text-transform:uppercase;
+  font-size:clamp(11px,.88vw,15px);
+  letter-spacing:.42em;text-transform:uppercase;
   color:var(--fc-aurum);
-  padding-bottom:1vh;
+  padding-bottom:.9vh;
   border-bottom:1px solid var(--fc-hair-soft);
 }
 
 .fd-ladder{display:flex;flex-direction:column}
 .fd-ladder-row{
   position:relative;
-  display:grid;grid-template-columns:1.5fr 1fr 1fr;
-  align-items:baseline;gap:1vw;
-  padding:1.1vh .9vw;
+  display:grid;grid-template-columns:1.6fr 1fr 1fr;
+  align-items:center;gap:1.2vw;
+  padding:1.4vh 1vw;
   border-bottom:1px solid var(--fc-hair-soft);
-  transition:background .3s ease;
 }
 .fd-ladder-row:last-of-type{border-bottom:none}
 .fd-ladder-lote{
+  display:flex;flex-direction:column;gap:.35vh;
+  line-height:1;
+}
+.fd-ladder-lote-name{
   font-family:var(--sans);font-weight:500;
-  font-size:clamp(13px,1.02vw,17px);
-  letter-spacing:.32em;text-transform:uppercase;
+  font-size:clamp(14px,1.18vw,20px);
+  letter-spacing:.26em;text-transform:uppercase;
   color:var(--fc-ink);
 }
-.fd-ladder-vagas,
-.fd-ladder-preco{
-  font-family:var(--display);font-style:italic;font-weight:300;
-  font-size:clamp(18px,1.65vw,30px);
+.fd-ladder-lote-serial{
+  font-family:var(--sans);font-weight:400;
+  font-size:clamp(9px,.7vw,12px);
+  letter-spacing:.26em;text-transform:uppercase;
+  color:var(--fc-ink-soft);
+}
+.fd-ladder-vagas{
+  font-family:var(--display);font-style:italic;font-weight:500;
+  font-size:clamp(20px,1.75vw,32px);
   line-height:1;letter-spacing:.005em;
   color:var(--fc-ink);
 }
-.fd-ladder-preco{text-align:right}
+.fd-ladder-preco{
+  font-family:var(--display);font-style:italic;font-weight:500;
+  font-size:clamp(20px,1.75vw,32px);
+  line-height:1;letter-spacing:.005em;
+  color:var(--fc-ink);
+  text-align:right;
+}
 
-/* Row atual, destaque com bullet dourado lateral, tipografia cheia e pastilha de fundo */
 .fd-ladder-row.current{
-  background:rgba(175,137,68,.06);
-  border-bottom-color:var(--fc-aurum);
-  padding-top:1.5vh;padding-bottom:1.5vh;
+  background:linear-gradient(180deg, rgba(184,168,122,.10) 0%, rgba(184,168,122,.04) 100%);
+  border-bottom:1px solid var(--fc-aurum-soft);
+  padding-top:2.2vh;padding-bottom:1.7vh;
+  margin-top:1.4vh;
 }
 .fd-ladder-row.current::before{
   content:'';
@@ -2376,38 +2596,74 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   left:0;top:14%;bottom:14%;
   width:2px;background:var(--fc-aurum);
 }
-.fd-ladder-row.current .fd-ladder-lote{color:var(--fc-aurum)}
+.fd-ladder-row.current::after{
+  content:"Reserva aberta";
+  position:absolute;
+  top:0;left:1.4vw;
+  transform:translateY(-50%);
+  padding:.2em .9em;
+  background:var(--fc-bone);
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(9px,.68vw,11px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--fc-aurum);
+  white-space:nowrap;
+}
+.fd-ladder-row.current .fd-ladder-lote-name{color:var(--fc-aurum)}
+.fd-ladder-row.current .fd-ladder-lote-serial{color:var(--fc-ink)}
 .fd-ladder-row.current .fd-ladder-vagas,
 .fd-ladder-row.current .fd-ladder-preco{
   color:var(--fc-ink);
-  font-size:clamp(22px,2vw,38px);
+  font-size:clamp(24px,2.15vw,38px);
 }
 
-/* Row final, encerramento da escada, tipografia cheia sem pastilha */
 .fd-ladder-row.final{
-  padding-top:1.5vh;padding-bottom:1.5vh;
+  padding-top:1.7vh;padding-bottom:1.7vh;
   border-top:1px solid var(--fc-ink-soft);
   margin-top:.2vh;
 }
-.fd-ladder-row.final .fd-ladder-lote,
+.fd-ladder-row.final .fd-ladder-lote-name,
 .fd-ladder-row.final .fd-ladder-vagas,
 .fd-ladder-row.final .fd-ladder-preco{color:var(--fc-ink)}
+.fd-ladder-row.final .fd-ladder-vagas,
 .fd-ladder-row.final .fd-ladder-preco{
-  font-size:clamp(22px,2vw,38px);
+  font-size:clamp(24px,2.15vw,38px);
 }
 
-/* Rows intermediarios mais apagados, para criar o arco current -> final */
-.fd-ladder-row:not(.current):not(.final) .fd-ladder-lote,
+.fd-ladder-row:not(.current):not(.final) .fd-ladder-lote-name,
+.fd-ladder-row:not(.current):not(.final) .fd-ladder-lote-serial,
 .fd-ladder-row:not(.current):not(.final) .fd-ladder-vagas,
-.fd-ladder-row:not(.current):not(.final) .fd-ladder-preco{color:rgba(43,42,39,.4)}
+.fd-ladder-row:not(.current):not(.final) .fd-ladder-preco{color:rgba(43,42,39,.5)}
 
 .fd-ficha{
-  margin-top:auto;padding-top:1.4vh;
+  margin-top:auto;padding-top:1.2vh;
   border-top:1px solid var(--fc-hair-soft);
   font-family:var(--sans);font-weight:500;
-  font-size:clamp(12px,.9vw,15px);line-height:1.4;
+  font-size:clamp(11px,.82vw,14px);line-height:1.4;
   letter-spacing:.3em;text-transform:uppercase;
   color:var(--fc-ink-soft);
+}
+.fd-footer{
+  display:flex;align-items:center;gap:1.2vw;
+  padding-top:.4vh;
+}
+.fd-footer-rule{flex:1;height:1px;background:var(--fc-hair-soft)}
+.fd-footer-diamond{
+  width:5px;height:5px;background:var(--fc-aurum);
+  transform:rotate(45deg);opacity:.85;
+  flex-shrink:0;
+}
+.fd-footer .fd-ficha{
+  margin:0;padding:0;border:none;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(10px,.78vw,13px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--fc-ink-soft);
+  white-space:nowrap;
+}
+.fd-footer .fd-ficha em{
+  font-style:italic;color:var(--fc-aurum);
+  font-weight:500;letter-spacing:.18em;
 }
 
 .fd-rights{
@@ -2415,56 +2671,33 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   flex:1;min-height:0;
 }
 .fd-right-item{
-  display:grid;grid-template-columns:2.8em 1fr;
-  column-gap:1.1vw;row-gap:.1vh;
+  display:grid;grid-template-columns:2.6em 1fr;
+  column-gap:1vw;row-gap:.2vh;
   padding:.65vh 0;
   border-bottom:1px solid var(--fc-hair-soft);
 }
 .fd-right-item:last-child{border-bottom:none}
 .fd-right-num{
-  font-family:var(--sans);font-weight:500;
-  font-size:clamp(11px,.88vw,16px);
-  letter-spacing:.34em;text-transform:uppercase;
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(15px,1.25vw,22px);
+  line-height:1;letter-spacing:.005em;text-transform:none;
   color:var(--fc-aurum);
-  padding-top:.25em;
-  min-width:2em;
+  padding-top:.45em;
 }
 .fd-right-name{
-  font-family:var(--display);font-weight:300;
-  font-size:clamp(17px,1.45vw,26px);
-  line-height:1.12;letter-spacing:0;
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(18px,1.55vw,28px);
+  line-height:1.1;letter-spacing:-.005em;
   color:var(--fc-ink);margin:0;
 }
 .fd-right-body{
   font-family:var(--serif);font-weight:400;
-  font-size:clamp(12px,.95vw,17px);
-  line-height:1.3;letter-spacing:.002em;
+  font-size:clamp(11px,.85vw,15px);
+  line-height:1.32;letter-spacing:.002em;
   color:var(--fc-ink-soft);margin:0;
   grid-column:2;
 }
 .fd-right-body em{font-style:italic;color:var(--fc-aurum)}
-
-.fd-closure{
-  display:grid;grid-template-columns:1fr auto;
-  align-items:baseline;gap:2vw;
-  padding-top:1vh;
-  border-top:1px solid var(--fc-hair-soft);
-  margin-top:.4vh;flex-shrink:0;
-}
-.fd-cta{
-  font-family:var(--display);font-style:italic;font-weight:300;
-  font-size:clamp(18px,1.55vw,28px);
-  line-height:1.2;letter-spacing:-.002em;
-  color:var(--fc-ink);margin:0;
-}
-.fd-cta em{font-style:italic;color:var(--fc-aurum)}
-.fd-attestation{
-  font-family:var(--sans);font-weight:500;
-  font-size:clamp(12px,.92vw,16px);
-  letter-spacing:.3em;text-transform:uppercase;
-  color:var(--fc-ink-soft);
-  text-align:right;
-}
 
 /* ============ SLIDE 24 · THE ONE · plano comercial tipográfico ============ */
 .slide.plan-the-one{
@@ -3886,70 +4119,259 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   font-weight:400;
 }
 
+/* ============ THE ONE refino editorial · escopo :not(.lc-layout) ============ */
+.slide.plan-hero.plan-grouped:not(.lc-layout){
+  padding:2.8vh 5vw 2.6vh;
+  gap:1vh;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-groups{
+  padding:1.4vh 0 .6vh;
+  gap:0 3vw;
+  position:relative;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-col + .ph-col{
+  padding-left:1.6vw;
+  border-left:1px solid transparent;
+  border-image:linear-gradient(180deg, transparent 0%, var(--pu-hair) 14%, var(--pu-hair) 86%, transparent 100%) 1;
+}
+
+/* Cat-labels editoriais · peso 500, tracking maior, filete oliva curto */
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-cat-label{
+  font-weight:500;
+  letter-spacing:.5em;
+  padding-bottom:1vh;
+  border-bottom:1px solid var(--pu-hair);
+  position:relative;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-cat-label::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:-1px;
+  width:2.4em;height:1.5px;
+  background:var(--pu-accent);
+}
+
+/* Cat-meta · "Quatro créditos / mês" como linha editorial com filete */
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-cat-meta{
+  display:inline-flex;align-items:center;gap:.7em;
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(14px,1.18vw,22px);
+  color:var(--pu-accent);
+  letter-spacing:.005em;
+  margin-top:.4vh;margin-bottom:.4vh;
+  opacity:.95;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-cat-meta::before{
+  content:"";
+  width:1.4em;height:1px;
+  background:var(--pu-accent);opacity:.8;
+}
+
+/* Subcat-name · respiro e tracking ajustado */
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-subcat-name{
+  letter-spacing:.005em;
+  line-height:1.18;
+}
+
+/* Items · italic delicate, ar visual */
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-items li{
+  font-weight:400;
+  line-height:1.45;
+  opacity:.92;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-items-inline li{
+  letter-spacing:.005em;
+  opacity:.88;
+}
+
+/* Footer · hierarquia comercial em oliva */
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer.ph-footer-center{
+  padding-top:1.4vh;
+  border-top:1px solid var(--pu-hair-strong);
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-oblig{
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(15px,1.22vw,22px);
+  letter-spacing:.005em;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price{
+  column-gap:5.4vw;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-row{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;gap:.4vh;
+  padding:.4vh 1vw 0;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-label{
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(11px,.88vw,15px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--pu-muted);
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-value{
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(28px,2.5vw,48px);
+  line-height:1;
+  color:var(--pu-ink);
+  letter-spacing:-.005em;
+}
+/* Anual · destaque oliva (anchor comercial) */
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-row:last-child .ph-price-label{
+  color:var(--pu-accent);
+  display:inline-flex;align-items:center;gap:.6em;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-row:last-child .ph-price-label::before,
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-row:last-child .ph-price-label::after{
+  content:"";
+  width:.9em;height:1px;
+  background:var(--pu-accent);opacity:.8;
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-row:last-child .ph-price-value{
+  position:relative;
+  color:var(--pu-ink);
+}
+.slide.plan-hero.plan-grouped:not(.lc-layout) .ph-footer-center .ph-price-row:last-child .ph-price-value::after{
+  content:"";
+  position:absolute;
+  left:50%;bottom:-.6vh;
+  transform:translateX(-50%);
+  width:38%;height:2px;
+  background:linear-gradient(90deg, transparent 0%, var(--pu-accent) 50%, transparent 100%);
+}
+
 /* ============ LC-LAYOUT · variante Life Code (Protocolo como hero) ============ */
+.slide.plan-hero.plan-grouped.lc-layout{
+  padding:2.8vh 5vw 2.6vh;
+  gap:1vh;
+}
 .slide.plan-hero.plan-grouped.lc-layout .ph-groups{
-  grid-template-columns:1.5fr 1fr;
-  gap:0 3.6vw;
+  grid-template-columns:1.5fr 1px 1fr;
+  gap:0 3.4vw;
+  padding:1.4vh 0 .6vh;
+  position:relative;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-groups::before{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;
+  left:calc(60% - 1.7vw);
+  width:1px;
+  background:linear-gradient(180deg, transparent 0%, var(--pu-hair) 14%, var(--pu-hair) 86%, transparent 100%);
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-col + .ph-col{
+  padding-left:1.6vw;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-herdado-callout{
   padding:1.1vh 0;margin-bottom:0;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-herdado-label{
-  font-size:clamp(12px,.98vw,16px);
-  font-weight:600;letter-spacing:.4em;
+  font-size:clamp(11px,.92vw,15px);
+  font-weight:500;letter-spacing:.5em;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-herdado-line{
-  font-size:clamp(14px,1.12vw,20px);
-  font-weight:400;opacity:.95;letter-spacing:.005em;
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:clamp(13px,1.08vw,19px);
+  letter-spacing:.005em;opacity:.88;
+}
+
+/* Cat-labels · editorial (lighter weight, double hairline + diamond) */
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-label{
+  display:flex;align-items:center;gap:.9em;
+  font-weight:500;
+  letter-spacing:.5em;
+  padding-bottom:1vh;
+  border-bottom:1px solid var(--pu-hair);
+  position:relative;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-label::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:-1px;
+  width:2.4em;height:1px;
+  background:var(--pu-accent);
 }
 
 /* Categoria hero · Protocolo Life Code */
-.slide.plan-hero.plan-grouped .ph-cat-hero .ph-cat-label{
-  font-size:clamp(15px,1.3vw,22px);
-  letter-spacing:.42em;font-weight:700;
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-cat-label{
+  font-size:clamp(13px,1.08vw,18px);
+  letter-spacing:.5em;font-weight:500;
   padding-bottom:1.2vh;
-  border-bottom:2px solid var(--pu-accent);
+  border-bottom:1px solid var(--pu-hair);
   color:var(--pu-accent);
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-cat-label::after{
+  width:3em;
+  background:var(--pu-accent);
+  height:1.5px;
 }
 .slide.plan-hero.plan-grouped .ph-items-list{
   list-style:none;padding:0;margin:0;
   display:flex;flex-direction:column;
 }
-.slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list{gap:1.6vh}
+.slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list{gap:1.5vh}
 .slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list li{
-  display:flex;flex-direction:column;gap:.35vh;
+  display:flex;flex-direction:column;gap:.4vh;
   padding-top:1.4vh;
   border-top:1px solid var(--pu-hair);
 }
 .slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list li:first-child{
-  border-top:none;padding-top:0;
+  border-top:none;padding-top:1.2vh;
+  position:relative;
+  padding-left:1.4vw;
+}
+/* Hero item heroico · marcador filete aurum */
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-items-list li:first-child::before{
+  content:"";
+  position:absolute;
+  left:0;top:1.6vh;bottom:.6vh;
+  width:2px;
+  background:linear-gradient(180deg, var(--pu-filete) 0%, var(--pu-accent) 100%);
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-items-list li:first-child .ph-lc-name{
+  font-size:clamp(24px,2.05vw,40px);
+  line-height:1.05;
+  letter-spacing:-.005em;
 }
 .slide.plan-hero.plan-grouped .ph-lc-name{
   font-family:var(--display);font-weight:500;
-  font-size:clamp(20px,1.78vw,34px);
+  font-size:clamp(20px,1.74vw,33px);
   line-height:1.1;color:var(--pu-ink);
   letter-spacing:.003em;
 }
 .slide.plan-hero.plan-grouped .ph-lc-name em{
   font-style:italic;color:var(--pu-accent);font-weight:500;
 }
-.slide.plan-hero.plan-grouped .ph-lc-meta{
-  font-family:var(--sans);font-weight:600;
-  font-size:clamp(12px,.98vw,17px);
-  letter-spacing:.26em;text-transform:uppercase;
-  color:var(--pu-accent);
+/* Meta · escala editorial leve, tirando o peso */
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-lc-meta{
+  display:inline-flex;align-items:center;gap:.6em;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(10px,.84vw,13px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--pu-muted);
+  margin-top:.2vh;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-lc-meta::before{
+  content:"";
+  width:1.4em;height:1px;
+  background:var(--pu-accent);opacity:.8;
 }
 .slide.plan-hero.plan-grouped .ph-lc-desc{
   font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(14px,1.15vw,21px);
-  line-height:1.4;color:var(--pu-ink);opacity:.82;
-  margin-top:.2vh;max-width:52ch;
+  font-size:clamp(13px,1.1vw,20px);
+  line-height:1.45;color:var(--pu-ink);opacity:.78;
+  margin-top:.4vh;max-width:52ch;
 }
 
 /* Sub-categorias · Mapeamento, Beat Care, Pilates */
-.slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list{gap:1.1vh}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-sub .ph-cat-label{
+  font-size:clamp(11px,.92vw,15px);
+}
+.slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list{gap:1vh}
 .slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list li{
-  display:flex;flex-direction:column;gap:.2vh;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:baseline;
+  column-gap:1vw;row-gap:.1vh;
   padding-top:1vh;
   border-top:1px solid var(--pu-hair);
 }
@@ -3957,24 +4379,115 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   border-top:none;padding-top:0;
 }
 .slide.plan-hero.plan-grouped .ph-cat-sub .ph-lc-name{
-  font-size:clamp(17px,1.48vw,27px);
+  font-size:clamp(16px,1.42vw,26px);
 }
-.slide.plan-hero.plan-grouped .ph-cat-quick{gap:.5vh}
+/* Meta direita · anotação editorial leve */
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-sub .ph-lc-meta{
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(9px,.74vw,12px);
+  letter-spacing:.32em;text-transform:uppercase;
+  color:var(--pu-muted);
+  align-self:center;
+  text-align:right;
+  white-space:nowrap;
+  position:relative;
+  padding-left:1.4em;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-sub .ph-lc-meta::before{
+  content:"";
+  position:absolute;
+  left:0;top:50%;
+  width:.9em;height:1px;
+  background:var(--pu-accent);opacity:.7;
+  transform:translateY(-50%);
+}
+
+/* Quick-cats · Beat Care, Pilates */
+.slide.plan-hero.plan-grouped .ph-cat-quick{gap:.6vh}
+.slide.plan-hero.plan-grouped.lc-layout .ph-cat-quick .ph-cat-label{
+  display:flex;align-items:center;justify-content:space-between;gap:1em;
+  padding-bottom:1vh;
+}
 .slide.plan-hero.plan-grouped .ph-quick-line{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:clamp(14px,1.18vw,20px);
+  line-height:1.4;color:var(--pu-ink);opacity:.85;
+  letter-spacing:.005em;
+  padding-top:.4vh;
+}
+/* Chip "Ilimitado" · selo de valor */
+.slide.plan-hero.plan-grouped.lc-layout .ph-ilimitado{
+  display:inline-flex;align-items:center;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(9px,.74vw,12px);
+  letter-spacing:.34em;text-transform:uppercase;
+  color:var(--pu-accent);
+  padding:.32em .9em;
+  border:1px solid var(--pu-accent);
+  border-radius:1px;
+  margin-left:0;
+  background:rgba(127,164,189,.04);
+  font-style:normal;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-ilimitado::before{
+  content:none;
+}
+
+/* Footer · hierarquia entre Assinatura e Anual */
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer.ph-footer-center{
+  padding-top:1.4vh;
+  border-top:1px solid var(--pu-hair-strong);
+  position:relative;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-oblig{
   font-family:var(--display);font-style:italic;font-weight:400;
-  font-size:clamp(15px,1.25vw,22px);
-  line-height:1.35;color:var(--pu-ink);opacity:.95;
-  letter-spacing:.003em;
+  font-size:clamp(15px,1.22vw,22px);
+  letter-spacing:.005em;
 }
-.slide.plan-hero.plan-grouped .ph-ilimitado{
-  font-family:var(--display);font-style:italic;font-weight:500;
-  letter-spacing:.01em;text-transform:none;
-  font-size:clamp(16px,1.35vw,24px);
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price{
+  column-gap:5.4vw;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-row{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;gap:.4vh;
+  padding:.4vh 1vw 0;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-label{
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(11px,.88vw,15px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--pu-muted);
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-value{
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(28px,2.5vw,48px);
+  line-height:1;
   color:var(--pu-ink);
-  margin-left:.6em;
+  letter-spacing:-.005em;
 }
-.slide.plan-hero.plan-grouped .ph-ilimitado::before{
-  content:"· ";color:var(--pu-accent);opacity:.7;margin-right:.08em;
+/* Anual · destaque sutil (anchor comercial em aurum) */
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-row:last-child .ph-price-label{
+  color:var(--pu-filete);
+  position:relative;
+  display:inline-flex;align-items:center;gap:.6em;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-row:last-child .ph-price-label::before,
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-row:last-child .ph-price-label::after{
+  content:"";
+  width:.9em;height:1px;
+  background:var(--pu-filete);opacity:.7;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-row:last-child .ph-price-value{
+  color:var(--pu-ink);
+  position:relative;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-footer-center .ph-price-row:last-child .ph-price-value::after{
+  content:"";
+  position:absolute;
+  left:50%;bottom:-.6vh;
+  transform:translateX(-50%);
+  width:38%;height:2px;
+  background:linear-gradient(90deg, transparent 0%, var(--pu-filete) 50%, transparent 100%);
 }
 
 /* Sigilo LC no canto superior direito */
@@ -5453,53 +5966,73 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   background-size:220px 220px;
 }
 
-/* HUD de navegacao (contador + progresso, auto-hide) */
-.nav{
-  position:fixed;bottom:2.2vh;right:var(--safe);z-index:10;
-  font-family:var(--sans);font-weight:300;
-  font-size:clamp(11px,.85vw,14px);letter-spacing:.28em;text-transform:uppercase;
-  color:var(--branco-livro);
+/* Dock unificada no canto inferior direito: navegacao + recursos + fullscreen */
+.dock{
+  position:fixed;right:var(--safe);bottom:2vh;z-index:11;
+  display:inline-flex;align-items:center;gap:2px;
+  padding:4px 8px;border-radius:999px;
+  font-family:var(--sans);color:rgba(43,42,39,.7);
   user-select:none;
-  display:flex;gap:16px;align-items:center;
-  padding:10px 18px;border-radius:999px;
-  background:rgba(20,17,13,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.08);
-  opacity:1;transition:opacity .4s var(--ease-out);
+  background:rgba(245,243,234,.55);
+  backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15);
+  border:1px solid rgba(43,42,39,.06);
+  box-shadow:0 2px 16px rgba(43,42,39,.05);
+  opacity:.45;
+  transition:opacity .5s var(--ease-out),background .35s,transform .35s var(--ease-out);
 }
-.nav[data-visible="false"]{opacity:0;pointer-events:none}
-.nav .ctrl{cursor:pointer;transition:color .3s;color:rgba(255,255,255,.55)}
-.nav .ctrl:hover{color:var(--branco-livro)}
-.nav #count{color:var(--branco-livro)}
-.nav .total{color:rgba(255,255,255,.55)}
-.nav .sep{color:rgba(255,255,255,.3)}
-.nav .progress{
-  width:120px;height:1px;background:rgba(255,255,255,.22);
+.dock:hover{opacity:1;background:rgba(245,243,234,.92)}
+.dock[data-visible="false"]{opacity:0;pointer-events:none;transform:translateY(6px)}
+
+/* Botoes auxiliares ficam ocultos no dock principal · atalhos seguem
+   funcionando pelo teclado (O, B, ?). Mantidos no DOM para o JS. */
+.dock-overview-btn,
+.dock-blackout-btn,
+.dock-help-btn,
+.dock-divider{display:none}
+
+.dock-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;padding:0;border:0;background:transparent;
+  border-radius:999px;color:rgba(43,42,39,.55);cursor:pointer;
+  transition:color .25s,background .25s,transform .2s;
+}
+.dock-btn:hover{color:rgba(43,42,39,.95);background:rgba(43,42,39,.06)}
+.dock-btn:active{transform:scale(.92)}
+.dock-btn svg{
+  width:13px;height:13px;display:block;
+  stroke:currentColor;stroke-width:1.5;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+
+.dock-counter{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:0 6px;
+  font-weight:400;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(43,42,39,.55);pointer-events:none;
+}
+.dock-counter .num{color:rgba(43,42,39,.85);min-width:1.6em;text-align:right;font-variant-numeric:tabular-nums}
+.dock-counter .sep{color:rgba(43,42,39,.22)}
+.dock-counter .total{color:rgba(43,42,39,.42);font-variant-numeric:tabular-nums}
+.dock-progress{
+  width:48px;height:1px;background:rgba(43,42,39,.12);
   position:relative;overflow:hidden;
 }
-.nav .progress .bar{
-  position:absolute;left:0;top:0;height:100%;
-  width:0%;background:var(--oliva-clara);
+.dock-progress .bar{
+  position:absolute;left:0;top:0;height:100%;width:0%;
+  background:rgba(184,168,122,.7);
   transition:width .6s var(--ease-out);
 }
 
-/* Botao entrar em apresentacao (so no slide 1) */
-.enter-presenter{
-  position:fixed;bottom:2.2vh;left:var(--safe);z-index:10;
-  font-family:var(--sans);font-weight:300;
-  font-size:clamp(11px,.85vw,13px);letter-spacing:.32em;text-transform:uppercase;
-  color:var(--branco-livro);
-  background:rgba(20,17,13,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.08);border-radius:999px;
-  cursor:pointer;padding:10px 18px 10px 14px;
-  transition:color .3s, background .3s;
-  display:none;align-items:center;
-}
-.enter-presenter:hover{background:rgba(20,17,13,.7)}
-.enter-presenter::before{
-  content:'';display:inline-block;width:1.6vw;height:1px;
-  background:var(--oliva-clara);margin-right:.9vw;
-}
-body[data-slide="0"] .enter-presenter{display:inline-flex}
+.dock .fs-icon-enter{display:block}
+.dock .fs-icon-exit{display:none}
+.dock .fs-toggle.is-fullscreen .fs-icon-enter{display:none}
+.dock .fs-toggle.is-fullscreen .fs-icon-exit{display:block}
+
+/* Botao "entrar em apresentacao" desativado em favor da dock (mantido no DOM por compatibilidade do JS) */
+.enter-presenter{display:none !important}
+
+/* Auto-hide do cursor em fullscreen apos inatividade */
+body.cursor-hidden,body.cursor-hidden *{cursor:none !important}
 
 /* Overview mode (tecla O) */
 body.overview .stage{
@@ -5519,7 +6052,7 @@ body.overview .slide{
 }
 body.overview .slide:hover{opacity:1;outline-color:var(--oliva-clara)}
 body.overview .slide.active{opacity:1;outline:1px solid var(--branco-livro)}
-body.overview .nav,body.overview .enter-presenter{display:none}
+body.overview .dock{display:none}
 .overview-label{
   display:none;
   position:fixed;top:4vh;left:var(--safe);z-index:11;
@@ -5529,16 +6062,17 @@ body.overview .nav,body.overview .enter-presenter{display:none}
 }
 body.overview .overview-label{display:block}
 
-/* Guarda para mobile / retrato */
-.mobile-guard{display:none}
-@media (orientation:portrait){
-  .mobile-guard{
-    display:flex;position:fixed;inset:0;z-index:9999;
-    background:var(--bone);color:var(--grafite);
-    flex-direction:column;justify-content:center;align-items:center;
-    gap:3vh;padding:10vw;text-align:center;
+/* Mobile portrait: rotaciona o conteudo para landscape (estilo Canva).
+   O .mobile-guard fica oculto; o body inteiro gira 90deg pra que o slide 16:9 caiba na tela vertical. */
+.mobile-guard{display:none !important}
+@media (orientation:portrait) and (max-width:900px){
+  html{overflow:hidden;height:100%;width:100%;}
+  body{
+    width:100vh;height:100vw;overflow:hidden;
+    transform-origin:0 0;
+    transform:rotate(90deg) translateY(-100%);
   }
-  .stage,.nav,.enter-presenter,.overview-label{display:none !important}
+  .stage{width:100% !important;height:100% !important;}
 }
 .mobile-guard__mark{
   font-family:var(--sans);font-weight:400;
@@ -5560,14 +6094,14 @@ body.overview .overview-label{display:block}
   max-width:32ch;
 }
 
-/* Mobile landscape: relaxar 16:9 e apertar safe area para aproveitar a tela */
+/* Mobile landscape: dock mais compacta (sem distorcer o 16:9 dos slides) */
 @media (orientation:landscape) and (max-height:520px){
   :root{--safe:4vw}
-  .slide{
-    width:100vw;height:100vh;
-    box-shadow:none;
-  }
-  .stage{background:var(--bone)}
+  .slide{box-shadow:none;}
+  .dock{gap:2px;padding:5px 8px}
+  .dock-btn{width:28px;height:28px}
+  .dock-progress{width:50px}
+  .dock-counter{padding:0 4px;letter-spacing:.2em}
 }
 
 /* Hint flutuante para mobile: "melhor experiencia em desktop" */
@@ -5594,9 +6128,7 @@ body.overview .overview-label{display:block}
   font-size:18px;line-height:1;cursor:pointer;padding:0 .2em;
 }
 .mobile-hint__close:hover{color:#fff}
-@media (orientation:landscape) and (max-height:520px){
-  .mobile-hint{display:inline-flex}
-}
+/* Hint de orientacao desativado: o deck rotaciona automaticamente em portrait */
 
 /* ============ RECURSOS DE APRESENTACAO ============
    Controles persistentes para o apresentador: fullscreen toggle,
@@ -5604,24 +6136,7 @@ body.overview .overview-label{display:block}
    Todos em SVG inline, sem biblioteca externa.
    ============================================================ */
 
-/* Pill fullscreen toggle, canto superior direito */
-.fs-toggle{
-  position:fixed;top:2.2vh;right:var(--safe);z-index:11;
-  display:inline-flex;align-items:center;justify-content:center;
-  width:42px;height:42px;
-  border-radius:999px;border:1px solid rgba(255,255,255,.08);
-  background:rgba(20,17,13,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  color:rgba(255,255,255,.75);cursor:pointer;
-  opacity:1;transition:opacity .4s var(--ease-out),color .3s,background .3s;
-}
-.fs-toggle:hover{color:var(--branco-livro);background:rgba(20,17,13,.75)}
-.fs-toggle svg{width:18px;height:18px;display:block}
-.fs-toggle[data-visible="false"]{opacity:0;pointer-events:none}
-.fs-toggle .fs-icon-enter{display:block}
-.fs-toggle .fs-icon-exit{display:none}
-.fs-toggle.is-fullscreen .fs-icon-enter{display:none}
-.fs-toggle.is-fullscreen .fs-icon-exit{display:block}
-body.overview .fs-toggle{display:none}
+/* Fullscreen toggle vive como botao da .dock - estilos de icon swap definidos no bloco da dock acima */
 
 /* Blackout / Whiteout overlay (teclas B / W) */
 .presenter-blackout{
@@ -5727,7 +6242,7 @@ body.overview .fs-toggle{display:none}
 @media (prefers-reduced-motion:reduce){
   .slide{transition:opacity .2s var(--ease-out)}
   .slide .bg{transition:none;transform:none !important}
-  .nav,.nav .progress .bar,.fs-toggle{transition:none}
+  .dock,.dock-progress .bar,.dock-btn{transition:none}
   .help-card,.jump-indicator[data-visible="true"]{animation:none}
 }
 
@@ -5830,6 +6345,696 @@ body.overview .fs-toggle{display:none}
 @keyframes fade{
   to{opacity:1}
 }
+
+/* ============ SLIDES · FOUNDERS PROCESSO + CARTA DE RESERVA · sub-marca Founders Collection ============ */
+.slide.founders-processo,
+.slide.carta-titulo{
+  --fc-bone:#EDE9E0;
+  --fc-ink:#2B2A27;
+  --fc-ink-soft:rgba(43,42,39,.64);
+  --fc-aurum:#B8A87A;
+  --fc-aurum-soft:rgba(184,168,122,.55);
+  --fc-hair-soft:rgba(43,42,39,.18);
+  --fc-hair:rgba(43,42,39,.45);
+  background:var(--fc-bone);
+  color:var(--fc-ink);
+  font-family:var(--serif);
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  padding:6.6vh 6.2vw 5.4vh;
+}
+
+.slide.founders-processo .cr-frame,
+.slide.carta-titulo .cr-frame{
+  position:absolute;inset:2.6vh 2.4vw;
+  border:1px solid var(--fc-hair-soft);
+  pointer-events:none;
+}
+.slide.founders-processo .cr-frame::before,
+.slide.carta-titulo .cr-frame::before{
+  content:"";position:absolute;inset:.9vh .7vw;
+  border:1px solid var(--fc-hair-soft);
+}
+
+.slide.founders-processo .cr-header,
+.slide.carta-titulo .cr-header{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  position:relative;z-index:3;
+  opacity:0;transform:translateY(10px);
+}
+.slide.founders-processo.active .cr-header,
+.slide.carta-titulo.active .cr-header{
+  animation:cr-rise 1500ms var(--ease-out) 200ms forwards;
+}
+.slide.founders-processo .cr-eyebrow,
+.slide.carta-titulo .cr-eyebrow{
+  display:flex;align-items:center;justify-content:center;gap:.7vw;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(11px,.88vw,14px);
+  letter-spacing:.5em;text-transform:uppercase;
+  color:var(--fc-aurum);
+  margin:0 0 1.8vh;
+  padding-right:.5em;
+}
+.slide.founders-processo .cr-eyebrow .sep,
+.slide.carta-titulo .cr-eyebrow .sep{
+  display:inline-block;width:3px;height:3px;border-radius:50%;
+  background:var(--fc-aurum-soft);
+}
+.slide.founders-processo .cr-title,
+.slide.carta-titulo .cr-title{
+  font-family:var(--display);
+  font-weight:300;font-style:normal;
+  font-size:clamp(54px,6vw,114px);
+  line-height:.98;letter-spacing:-.012em;
+  color:var(--fc-ink);
+  margin:0;
+}
+.slide.founders-processo .cr-title em,
+.slide.carta-titulo .cr-title em{
+  font-style:italic;font-weight:300;
+  color:var(--fc-aurum);
+}
+.slide.founders-processo .cr-subtitle,
+.slide.carta-titulo .cr-subtitle{
+  font-family:var(--display);
+  font-weight:300;font-style:italic;
+  font-size:clamp(17px,1.55vw,28px);
+  line-height:1.45;letter-spacing:.005em;
+  color:var(--fc-ink);
+  margin:1.2vh 0 0;
+}
+.slide.founders-processo .cr-subtitle{max-width:60ch}
+.slide.carta-titulo .cr-subtitle{max-width:54ch}
+.slide.founders-processo .cr-subtitle em,
+.slide.carta-titulo .cr-subtitle em{
+  font-style:italic;color:var(--fc-aurum);font-weight:400;
+}
+
+/* ===== FOUNDERS PROCESSO · timeline + pilares ===== */
+.slide.founders-processo .fp-body{
+  display:flex;flex-direction:column;
+  justify-content:center;
+  gap:3.4vh;
+  padding:2vh 0;
+  position:relative;z-index:3;
+  min-height:0;
+}
+.slide.founders-processo .fp-section-head{
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(10px,.78vw,13px);
+  letter-spacing:.46em;text-transform:uppercase;
+  color:var(--fc-aurum);
+  text-align:center;
+  margin-bottom:1.4vh;
+}
+.slide.founders-processo .fp-timeline{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  list-style:none;
+  border-top:1px solid var(--fc-hair-soft);
+  border-bottom:1px solid var(--fc-hair-soft);
+  padding:2.6vh 0;
+}
+.slide.founders-processo .fp-step{
+  display:flex;flex-direction:column;
+  gap:.8vh;
+  padding:1.6vh 1.6vw 0;
+  position:relative;
+  text-align:left;
+  opacity:0;transform:translateY(14px);
+}
+.slide.founders-processo.active .fp-step{
+  animation:cr-rise 1300ms var(--ease-out) forwards;
+}
+.slide.founders-processo.active .fp-step:nth-child(1){animation-delay:700ms}
+.slide.founders-processo.active .fp-step:nth-child(2){animation-delay:920ms}
+.slide.founders-processo.active .fp-step:nth-child(3){animation-delay:1140ms}
+.slide.founders-processo.active .fp-step:nth-child(4){animation-delay:1360ms}
+.slide.founders-processo .fp-step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  top:14%;right:0;
+  width:1px;height:72%;
+  background:var(--fc-hair-soft);
+}
+.slide.founders-processo .fp-step-num{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(28px,2.8vw,52px);
+  line-height:1;letter-spacing:-.005em;
+  color:var(--fc-aurum);
+}
+.slide.founders-processo .fp-step-name{
+  font-family:var(--display);font-weight:300;
+  font-size:clamp(20px,1.95vw,36px);
+  line-height:1.05;letter-spacing:-.005em;
+  color:var(--fc-ink);
+  margin:0;
+}
+.slide.founders-processo .fp-step-name em{
+  font-style:italic;font-weight:300;
+  color:var(--fc-aurum);
+}
+.slide.founders-processo .fp-step-desc{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(12px,.95vw,16px);
+  line-height:1.5;letter-spacing:.003em;
+  color:var(--fc-ink-soft);
+  margin:.2vh 0 0;
+}
+.slide.founders-processo .fp-step-desc em{
+  font-style:italic;color:var(--fc-aurum);font-weight:400;
+}
+.slide.founders-processo .fp-step-tag{
+  display:block;
+  min-height:1.6em;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(9px,.7vw,11px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--fc-aurum);
+  margin-bottom:.4vh;
+}
+.slide.founders-processo .fp-step-active{
+  background:linear-gradient(180deg, rgba(184,168,122,.10) 0%, rgba(184,168,122,0) 60%);
+  box-shadow:inset 0 2px 0 0 var(--fc-aurum);
+}
+.slide.founders-processo .fp-pillars{
+  list-style:none;
+  display:flex;flex-direction:column;
+  gap:1.1vh;
+  padding:0 4vw;
+  opacity:0;transform:translateY(12px);
+}
+.slide.founders-processo.active .fp-pillars{
+  animation:cr-rise 1400ms var(--ease-out) 1600ms forwards;
+}
+.slide.founders-processo .fp-pillar{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:baseline;
+  gap:1.2vw;
+  font-family:var(--display);
+  font-weight:300;
+  font-size:clamp(15px,1.36vw,26px);
+  line-height:1.4;letter-spacing:.003em;
+  color:var(--fc-ink);
+}
+.slide.founders-processo .fp-pillar-mark{
+  color:var(--fc-aurum);
+  font-weight:500;
+  font-size:.86em;
+  align-self:center;
+}
+.slide.founders-processo .fp-pillar-text em{
+  font-style:italic;color:var(--fc-aurum);font-weight:400;
+}
+
+/* ===== CARTA DE RESERVA · cerimônia de ativação · v2 ===== */
+.slide.carta-titulo .ct-watermark{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  z-index:1;pointer-events:none;user-select:none;
+}
+.slide.carta-titulo .ct-watermark-glyph{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(360px,42vw,720px);
+  line-height:1;letter-spacing:-.02em;
+  color:var(--fc-aurum);opacity:.04;
+  transform:translateY(2vh);
+}
+.slide.carta-titulo .ct-body{
+  display:flex;align-items:center;justify-content:center;
+  padding:1.4vh 0;
+  position:relative;z-index:3;
+  min-height:0;
+}
+
+/* CARD · papel cotton com letterpress depth */
+.slide.carta-titulo .ct-card{
+  position:relative;
+  width:78vw;max-width:1180px;
+  padding:5.4vh 5.4vw 4.2vh;
+  display:flex;flex-direction:column;
+  gap:3.6vh;
+  background:
+    radial-gradient(ellipse 70% 60% at 18% 12%, rgba(255,253,247,.65) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 55% at 82% 88%, rgba(184,168,122,.06) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(251,248,242,.78) 0%, rgba(247,243,234,.65) 100%);
+  border:1px solid var(--fc-hair-soft);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,253,247,.5),
+    0 1px 0 rgba(43,42,39,.04),
+    0 30px 80px -50px rgba(43,42,39,.28),
+    0 8px 24px -16px rgba(43,42,39,.12);
+  opacity:0;transform:translateY(18px);
+}
+.slide.carta-titulo.active .ct-card{
+  animation:cr-rise 1900ms var(--ease-out) 800ms forwards;
+}
+/* Filete aurum superior · presença, não decoração */
+.slide.carta-titulo .ct-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent 0%, var(--fc-aurum-soft) 12%, var(--fc-aurum) 50%, var(--fc-aurum-soft) 88%, transparent 100%);
+}
+/* Bordadura interna delicada */
+.slide.carta-titulo .ct-card::after{
+  content:"";
+  position:absolute;
+  inset:1.2vh 1vw;
+  border:1px solid rgba(184,168,122,.18);
+  pointer-events:none;
+}
+
+/* CARIMBO · "RESERVA" rotacionado, baixa opacidade · cartório */
+.slide.carta-titulo .ct-stamp{
+  position:absolute;
+  bottom:3.4vh;right:3.4vw;
+  transform:rotate(-7deg);
+  border:2px solid rgba(184,168,122,.42);
+  padding:.7vh 1.2vw;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(11px,.94vw,16px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:rgba(184,168,122,.5);
+  pointer-events:none;
+  z-index:2;
+  background:transparent;
+  text-align:center;
+  line-height:1.2;
+}
+.slide.carta-titulo .ct-stamp-sub{
+  display:block;
+  font-size:.62em;
+  letter-spacing:.42em;
+  margin-top:.2em;
+  opacity:.85;
+}
+
+/* HEADER do card · cartouche editorial */
+.slide.carta-titulo .ct-card-rotulo{
+  display:flex;align-items:center;justify-content:center;gap:1.4vw;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(11px,.92vw,15px);
+  letter-spacing:.46em;text-transform:uppercase;
+  color:var(--fc-aurum);
+  text-align:center;
+  margin:0;padding:0 8vw;
+  position:relative;z-index:3;
+}
+.slide.carta-titulo .ct-card-rotulo::before,
+.slide.carta-titulo .ct-card-rotulo::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg, transparent 0%, var(--fc-aurum-soft) 100%);
+}
+.slide.carta-titulo .ct-card-rotulo::after{
+  background:linear-gradient(90deg, var(--fc-aurum-soft) 0%, transparent 100%);
+}
+.slide.carta-titulo .ct-card-rotulo-diamond{
+  width:5px;height:5px;background:var(--fc-aurum);
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+.slide.carta-titulo .ct-card-rotulo em{
+  font-style:italic;color:var(--fc-ink);
+  font-weight:500;letter-spacing:.32em;
+}
+
+/* FIELDS · duas colunas claras, gesto humano vs timbre do número */
+.slide.carta-titulo .ct-fields{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:2vh 5vw;
+  align-items:end;
+  position:relative;z-index:3;
+}
+.slide.carta-titulo .ct-field{
+  display:flex;flex-direction:column;
+  gap:1.2vh;
+  min-width:0;
+  position:relative;
+}
+.slide.carta-titulo .ct-field-label{
+  display:flex;align-items:center;gap:.8em;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(10px,.78vw,13px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:var(--fc-ink-soft);
+}
+.slide.carta-titulo .ct-field-label::before{
+  content:"";
+  display:inline-block;
+  width:.7em;height:1px;
+  background:var(--fc-aurum);
+}
+
+/* Nome · placeholder em italic ghost · cursor que pulsa */
+.slide.carta-titulo .ct-field-name{
+  padding-bottom:.6vh;
+}
+.slide.carta-titulo .ct-field-name .ct-field-ghost{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(28px,3vw,52px);
+  line-height:1;letter-spacing:.005em;
+  color:rgba(43,42,39,.22);
+  margin-top:1vh;
+  height:1em;
+  display:flex;align-items:flex-end;
+  position:relative;
+}
+.slide.carta-titulo .ct-field-name .ct-field-ghost::after{
+  content:"|";
+  display:inline-block;
+  margin-left:.06em;
+  color:var(--fc-aurum);
+  font-weight:300;
+  animation:cr-cursor 1.2s ease-in-out infinite;
+}
+.slide.carta-titulo .ct-field .ct-field-line{
+  display:block;
+  height:1.5px;
+  background:linear-gradient(90deg, var(--fc-ink) 0%, var(--fc-ink) 92%, var(--fc-aurum-soft) 100%);
+  margin-top:1.4vh;
+  position:relative;
+}
+
+/* Form · contém fields + validity + disclaimer + submit, com gap editorial */
+.slide.carta-titulo .ct-form{
+  display:flex;flex-direction:column;
+  gap:2.6vh;
+  margin:0;
+  position:relative;z-index:3;
+}
+
+/* Input do nome · italic display sobre underline, mesma gramática do ghost original */
+.slide.carta-titulo .ct-input{
+  appearance:none;-webkit-appearance:none;
+  background:transparent;border:0;outline:0;
+  padding:0;margin:0;
+  font:inherit;
+  color:var(--fc-ink);
+  caret-color:var(--fc-aurum);
+}
+.slide.carta-titulo .ct-input-name{
+  display:block;width:100%;
+  margin-top:1vh;
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(28px,3vw,52px);
+  line-height:1;letter-spacing:.005em;
+}
+.slide.carta-titulo .ct-input-name::placeholder{
+  color:rgba(43,42,39,.22);
+  font-style:italic;
+}
+.slide.carta-titulo .ct-input-name:focus-visible{outline:0}
+.slide.carta-titulo .ct-input-error{animation:ct-shake .42s ease-in-out}
+@keyframes ct-shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-4px)}
+  40%{transform:translateX(4px)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(2px)}
+}
+
+/* Numero · linha editorial, mesma cadência do nome (italic display sobre underline)
+   com o "Nº" como timbre, input central sublinhado em aurum, spinner discreto,
+   "/100" como rodapé tipográfico. */
+.slide.carta-titulo .ct-field-num{align-items:stretch;padding:0}
+.slide.carta-titulo .ct-num-row{
+  display:inline-flex;align-items:baseline;
+  gap:.26em;
+  margin-top:1vh;
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(40px,4.2vw,72px);
+  line-height:1;letter-spacing:-.008em;
+  color:var(--fc-ink);
+}
+.slide.carta-titulo .ct-num-row .ct-field-no{
+  font-style:italic;color:var(--fc-ink);
+  font-size:.84em;letter-spacing:-.01em;
+}
+.slide.carta-titulo .ct-num-control{
+  display:inline-flex;align-items:baseline;
+  gap:.16em;
+  position:relative;
+}
+.slide.carta-titulo .ct-input-num{
+  font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:1em;line-height:1;
+  width:3.4ch;
+  text-align:center;
+  letter-spacing:.02em;
+  color:var(--fc-aurum);
+  caret-color:var(--fc-aurum);
+  border-bottom:1.5px solid rgba(184,168,122,.42);
+  padding:0 .04em .04em;
+  transition:border-color .25s ease;
+}
+.slide.carta-titulo .ct-input-num::-webkit-outer-spin-button,
+.slide.carta-titulo .ct-input-num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.slide.carta-titulo .ct-input-num:hover{border-bottom-color:rgba(184,168,122,.7)}
+.slide.carta-titulo .ct-input-num:focus,
+.slide.carta-titulo .ct-input-num:focus-visible{
+  outline:0;
+  border-bottom-color:var(--fc-aurum);
+}
+.slide.carta-titulo .ct-num-spin{
+  display:inline-flex;flex-direction:column;justify-content:center;
+  align-self:center;
+  height:1.1em;gap:2px;
+  margin-left:.18em;
+}
+.slide.carta-titulo .ct-num-spin-btn{
+  appearance:none;background:transparent;border:0;
+  padding:0;
+  width:.7em;height:.42em;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:rgba(184,168,122,.5);
+  transition:color .2s ease, transform .15s ease;
+}
+.slide.carta-titulo .ct-num-spin-btn svg{
+  width:100%;height:auto;
+  fill:none;stroke:currentColor;
+  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+}
+.slide.carta-titulo .ct-num-spin-btn:hover{color:var(--fc-aurum)}
+.slide.carta-titulo .ct-num-spin-btn:active{transform:scale(.86)}
+.slide.carta-titulo .ct-num-spin-btn:focus-visible{
+  outline:1px solid var(--fc-aurum);
+  outline-offset:2px;
+  color:var(--fc-aurum);
+}
+.slide.carta-titulo .ct-num-row .ct-field-divider{
+  font-style:normal;font-weight:300;
+  color:var(--fc-aurum);
+  font-size:.58em;
+  align-self:center;
+  margin:0 .14em;
+  opacity:.65;
+}
+.slide.carta-titulo .ct-num-row .ct-field-total{
+  font-style:italic;
+  color:var(--fc-ink-soft);
+  font-size:.4em;
+  align-self:flex-end;
+  letter-spacing:.06em;
+  padding-bottom:.7em;
+}
+
+/* Submit row · botão "Reservar" centralizado, helper editorial acima.
+   Stack vertical evita competir com o carimbo no canto inferior direito. */
+.slide.carta-titulo .ct-submit-row{
+  display:flex;flex-direction:column;align-items:center;
+  gap:1.6vh;
+  padding-top:2vh;
+  border-top:1px solid rgba(184,168,122,.18);
+  position:relative;z-index:3;
+}
+.slide.carta-titulo .ct-submit{
+  appearance:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:1.1em;
+  padding:1.45vh 2.6vw;
+  border:1px solid var(--fc-aurum);
+  background:transparent;
+  color:var(--fc-ink);
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(12px,1vw,16px);
+  letter-spacing:.34em;
+  text-transform:uppercase;
+  transition:background .35s var(--ease-out), color .35s var(--ease-out),
+             transform .35s var(--ease-out), box-shadow .35s var(--ease-out),
+             border-color .35s var(--ease-out);
+  position:relative;overflow:hidden;
+}
+.slide.carta-titulo .ct-submit::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg, transparent 0%, rgba(184,168,122,.22) 50%, transparent 100%);
+  transform:translateX(-100%);
+  transition:transform .8s var(--ease-out);
+  pointer-events:none;
+}
+.slide.carta-titulo .ct-submit:hover::before{transform:translateX(100%)}
+.slide.carta-titulo .ct-submit:hover{
+  background:rgba(184,168,122,.06);
+  transform:translateY(-1px);
+  box-shadow:0 6px 22px -14px rgba(184,168,122,.55);
+}
+.slide.carta-titulo .ct-submit:active{transform:translateY(0);box-shadow:none}
+.slide.carta-titulo .ct-submit:focus-visible{
+  outline:1px solid var(--fc-aurum);outline-offset:3px;
+}
+.slide.carta-titulo .ct-submit-arrow{
+  font-style:normal;
+  color:var(--fc-aurum);
+  font-size:1.18em;line-height:0;
+  transition:transform .35s var(--ease-out);
+  display:inline-block;
+}
+.slide.carta-titulo .ct-submit:hover .ct-submit-arrow{transform:translateX(.32em)}
+.slide.carta-titulo .ct-submit.is-success{
+  background:var(--fc-aurum);
+  border-color:var(--fc-aurum);
+  color:var(--fc-bone, #faf7ee);
+}
+.slide.carta-titulo .ct-submit.is-success .ct-submit-arrow{color:var(--fc-bone, #faf7ee)}
+.slide.carta-titulo .ct-submit-helper{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(12px,.92vw,16px);
+  color:var(--fc-ink-soft);
+  margin:0;
+  text-align:center;
+  max-width:42ch;
+  line-height:1.4;
+}
+
+/* Card · gap reduzido para acomodar o submit row sem apertar o ritmo */
+.slide.carta-titulo .ct-card{gap:2.6vh}
+
+/* VALIDITY · duas colunas com → aurum, mais editorial */
+.slide.carta-titulo .ct-card-validity{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.4vw;
+  padding-top:2vh;
+  border-top:1px solid var(--fc-hair-soft);
+  position:relative;z-index:3;
+}
+.slide.carta-titulo .ct-validity-line{
+  display:flex;align-items:flex-start;gap:.8vw;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(10px,.78vw,13px);
+  letter-spacing:.32em;text-transform:uppercase;
+  color:var(--fc-ink-soft);
+  line-height:1.5;
+}
+.slide.carta-titulo .ct-validity-rule{
+  display:inline-block;flex-shrink:0;
+  width:1.6vw;min-width:18px;
+  height:.7em;
+  position:relative;
+  margin-top:.15em;
+}
+.slide.carta-titulo .ct-validity-rule::before{
+  content:"";
+  position:absolute;
+  top:50%;left:0;right:.4em;
+  height:1px;background:var(--fc-aurum);
+}
+.slide.carta-titulo .ct-validity-rule::after{
+  content:"";
+  position:absolute;
+  top:50%;right:0;
+  width:.4em;height:.4em;
+  border-top:1px solid var(--fc-aurum);
+  border-right:1px solid var(--fc-aurum);
+  transform:translate(0,-50%) rotate(45deg);
+}
+.slide.carta-titulo .ct-validity-text{
+  flex:1;
+}
+.slide.carta-titulo .ct-validity-text em{
+  font-style:italic;color:var(--fc-aurum);
+  font-weight:500;letter-spacing:.22em;
+  text-transform:none;
+}
+
+/* DISCLAIMER · italic small, hairline tracejada */
+.slide.carta-titulo .ct-card-disclaimer{
+  position:relative;z-index:3;
+  margin-top:-.4vh;
+  padding-top:1.6vh;
+  border-top:1px dashed rgba(43,42,39,.16);
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:clamp(11px,.82vw,14px);
+  line-height:1.55;letter-spacing:.002em;
+  color:rgba(43,42,39,.5);
+  text-align:left;max-width:64ch;
+}
+.slide.carta-titulo .ct-card-disclaimer em{
+  font-style:italic;color:var(--fc-aurum);font-weight:400;
+}
+
+@keyframes cr-cursor{
+  0%,40%,100%{opacity:.2}
+  50%,90%{opacity:.95}
+}
+
+/* ===== FECHAMENTO · compartilhado ===== */
+.slide.founders-processo .cr-closure,
+.slide.carta-titulo .cr-closure{
+  display:flex;flex-direction:column;align-items:center;gap:1.4vh;
+  position:relative;z-index:3;
+  opacity:0;transform:translateY(10px);
+}
+.slide.founders-processo.active .cr-closure{
+  animation:cr-rise 1700ms var(--ease-out) 2000ms forwards;
+}
+.slide.carta-titulo.active .cr-closure{
+  animation:cr-rise 1700ms var(--ease-out) 1900ms forwards;
+}
+.slide.founders-processo .cr-closure-rule,
+.slide.carta-titulo .cr-closure-rule{
+  display:flex;align-items:center;gap:1vw;
+  width:100%;
+}
+.slide.founders-processo .cr-closure-rule .line,
+.slide.carta-titulo .cr-closure-rule .line{flex:1;height:1px;background:var(--fc-hair-soft)}
+.slide.founders-processo .cr-closure-rule .diamond,
+.slide.carta-titulo .cr-closure-rule .diamond{
+  width:5px;height:5px;background:var(--fc-aurum);
+  transform:rotate(45deg);opacity:.85;
+}
+.slide.founders-processo .cr-statement,
+.slide.carta-titulo .cr-statement{
+  font-family:var(--display);
+  font-weight:300;font-style:normal;
+  font-size:clamp(20px,2vw,36px);
+  line-height:1.25;letter-spacing:.005em;
+  color:var(--fc-ink);
+  text-align:center;
+  margin:0;
+}
+.slide.founders-processo .cr-statement em,
+.slide.carta-titulo .cr-statement em{font-style:italic;font-weight:300;color:var(--fc-aurum)}
+.slide.founders-processo .cr-statement .arrow,
+.slide.carta-titulo .cr-statement .arrow{
+  display:inline-block;
+  margin-left:.5em;
+  color:var(--fc-aurum);
+  font-style:italic;
+}
+
+@keyframes cr-rise{
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes cr-blink{
+  0%,40%,100%{opacity:.35;height:.6em}
+  50%,90%{opacity:.95;height:1em}
+}
 </style>
 </head>
 <body>
@@ -5851,6 +7056,7 @@ body.overview .fs-toggle{display:none}
     <div class="split">
       <div class="col-text">
         <div class="eyebrow">
+          <span class="rule" aria-hidden="true"></span>
           <span>Quem Somos</span>
         </div>
 
@@ -5872,10 +7078,17 @@ body.overview .fs-toggle{display:none}
           <dt>Club</dt>
           <dd>Arquitetura privada. Um <em>território</em> dos membros.</dd>
         </dl>
+
+        <p class="s02-folio" aria-hidden="true">
+          <span class="s02-folio-num">01</span>
+          <span class="s02-folio-rule"></span>
+          <span class="s02-folio-text">Abertura</span>
+        </p>
       </div>
 
-      <div class="col-img fx-recepcao-marmore">
-        <img src="./assets/images/renders/recepcao/lounge-poltronas-verdes-marmore.webp" alt="Recepção do The Beat Life Club">
+      <div class="col-img s02-cinema">
+        <img src="./assets/images/renders/academia/vista-lateral-janelas-jardim.webp"
+             alt="Salão central do The Beat Life Club com claraboia oval, oliveira centralizada e jardins de jacarandá visíveis pelas janelas">
       </div>
     </div>
 
@@ -5883,226 +7096,139 @@ body.overview .fs-toggle{display:none}
 
   <!-- SLIDE EXTRA · CLUB SILENT · tr\u00edptico assim\u00e9trico antes do PICO -->
 
-  <section class="slide silent-triptych asymmetric" id="s-club-silent" data-slide="s-club-silent">
-    <div class="st-grid">
-      <figure class="st-photo st-hero">
-        <img src="./assets/images/renders/salao/01-arvore.webp" alt="Sal\u00e3o central com oliveira sob claraboia circular, poltronas brancas e aparelhos ao redor">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/recepcao/57-recepcao.webp" alt="Recep\u00e7\u00e3o com balc\u00e3o de m\u00e1rmore e pendentes circulares">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/recepcao/58-recepcao.webp" alt="Lounge do club com poltronas verdes, bar e plantas">
-      </figure>
-    </div>
-  </section>
-
-  <section class="slide arch opener pico" id="s03" data-slide="03">
-    <div class="media fx-oliveira-salao">
-      <img class="bg pos-center" src="./assets/images/renders/salao/01-arvore.webp" alt="Salão central com oliveira, poltronas e aparelhos">
-    </div>
-    <aside class="arch-rail">
-      <div class="rail-head">
-        <div class="rail-section">O Club</div>
-        <div class="rail-rule"></div>
-      </div>
-      <div class="rail-body">
-        <h2 class="rail-wordmark pico-triade">
-          <span class="w">Private.</span>
-          <span class="w">Wellness.</span>
-          <span class="w">Club.</span>
-        </h2>
-      </div>
-      <div class="rail-foot">
-        <div class="meta"></div>
-      </div>
-    </aside>
+  <section class="slide solo-hero" id="s03" data-slide="03">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/recepcao/62-recepcao-externa.webp" alt="Recepção do The Beat Life Club vista da varanda externa, teto ripado em madeira, parede de mármore ao fundo">
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">The Beat Life Club <span class="solo-sig-dot">·</span> Belvedere <span class="solo-sig-dot">·</span> Botanico Shopping</span>
+    </figcaption>
   </section>
 
   <!-- CAPITULO II · A ARQUITETURA · foto monumental + statement editorial -->
 
-  <section class="slide arquitetura-hero" id="s04" data-slide="04">
-    <figure class="ar-photo fx-academia-claraboia">
-      <img src="./assets/images/renders/academia/vista-claraboia-maquinas.webp" alt="Salão principal com claraboia circular e aparelhos Technogym">
+  <section class="slide solo-hero" id="s04" data-slide="04">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/academia/vista-claraboia-maquinas.webp" alt="Salão principal da academia com claraboia circular e aparelhos Technogym ao redor">
     </figure>
-
-    <footer class="ar-bottom">
-      <h2 class="ar-title">Ambiente <span class="dot">·</span> Arquitetura <span class="dot">·</span> Academia</h2>
-      <div class="ar-mark">
-        <span class="ar-mark-rule" aria-hidden="true"></span>
-        <span class="ar-mark-text">Intencional</span>
-      </div>
-    </footer>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Academia</span>
+    </figcaption>
   </section>
 
-  <section class="slide silent-triptych asymmetric" id="s-academia-eco" data-slide="s-academia-eco">
-    <div class="st-grid">
-      <figure class="st-photo st-hero">
-        <img src="./assets/images/renders/academia/03-academia-sq.webp" alt="Detalhe da academia">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/academia/05-academia-sq.webp" alt="Detalhe da academia">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/academia/09-borrachao-sq.webp" alt="Borrachão da academia">
-      </figure>
-    </div>
+  <section class="slide solo-hero" id="s-beat-club" data-slide="s-beat-club">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/dj/41-dj.webp" alt="DJ no salão do The Beat Life Club, mesa de som iluminada sob claraboia">
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Beat Club</span>
+    </figcaption>
   </section>
 
-  <section class="slide framed silent" id="s05" data-slide="05">
-    <div class="framed-photo fx-bike-vitrine">
+  <section class="slide solo-hero" id="s05" data-slide="05">
+    <figure class="solo-photo">
       <img src="./assets/images/renders/academia/16-academia.webp" alt="Sala de Wattbike vista pelo vidro curvo, vitrine do club ao lado">
-    </div>
-    <div class="framed-footer">
-      <div class="meta">O ciclo. O dia.</div>
-    </div>
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Wattbike</span>
+    </figcaption>
   </section>
 
   <!-- SLIDE EXTRA · SPIN ROOM · hero editorial + tr\u00edptico de apoio -->
 
-  <section class="slide spin-showcase" id="s-spin-showcase" data-slide="s-spin-showcase">
-    <header class="sr-header">
-      <div class="sr-eyebrow">Spin Beat</div>
-      <div class="sr-meta">Coletivo <span class="dot">·</span> Musical <span class="dot">·</span> <em>Imersivo</em></div>
-    </header>
-
-    <figure class="sr-hero">
+  <section class="slide solo-hero" id="s-spin-showcase" data-slide="s-spin-showcase">
+    <figure class="solo-photo">
       <img src="./assets/images/renders/spin-room/29-spin-room.webp" alt="Spin Room, sala imersiva com tela panorâmica de floresta">
     </figure>
-
-    <div class="sr-caption">
-      <span class="sr-caption-left">Uma sala, <em>uma floresta</em>, uma batida.</span>
-      <span class="sr-caption-rule"></span>
-      <span class="sr-caption-right">Spin Room</span>
-    </div>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Spin Room</span>
+    </figcaption>
   </section>
 
   <!-- CAPITULO III · O RITMO -->
 
-  <section class="slide framed silent" id="s06" data-slide="06">
-    <div class="framed-photo fx-pilates-vidro-curvo">
+  <section class="slide solo-hero" id="s06" data-slide="06">
+    <figure class="solo-photo">
       <img src="./assets/images/renders/pilates/33-pilates.webp" alt="Sala de pilates vista pelo vidro curvo, reformers dentro">
-    </div>
-    <div class="framed-footer">
-      <div class="meta">O dia. O movimento.</div>
-    </div>
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Pilates</span>
+    </figcaption>
   </section>
 
   <!-- CAPITULO IV · O CUIDADO -->
 
-  <section class="slide corpo-hero" id="s07" data-slide="07">
-    <figure class="ch-photo fx-pilates-claraboia">
-      <img src="./assets/images/renders/pilates/hero-reformers-claraboia.webp" alt="Sala de pilates com reformers sob claraboia circular">
-    </figure>
-
-    <footer class="ch-bottom">
-      <h2 class="ch-title">
-        <span class="l">O Corpo</span>
-        <span class="l">Humano</span>
-        <span class="l">Em Movimento</span>
-      </h2>
-      <div class="ch-mark">
-        <span class="ch-mark-rule" aria-hidden="true"></span>
-        <span class="ch-mark-text">Longevidade <span class="dot">·</span> Saudável</span>
-      </div>
-    </footer>
-  </section>
-
-  <section class="slide temperatura-hero" id="s08" data-slide="08">
-    <figure class="te-photo fx-sauna-ofuro">
-      <img src="./assets/images/renders/feminino-spa/crioterapia-termoterapia-2.webp" alt="Sala de crioterapia e termoterapia em madeira">
-    </figure>
-
-    <footer class="te-bottom">
-      <h2 class="te-title">
-        <span class="l">O <em>frio</em>.</span>
-        <span class="l">O <em>quente</em>.</span>
-      </h2>
-      <div class="te-mark">
-        <span class="te-mark-rule" aria-hidden="true"></span>
-        <span class="te-mark-text">A Temperatura</span>
-      </div>
-    </footer>
-  </section>
-
-  <section class="slide silent-triptych" id="s-temperatura-eco" data-slide="s-temperatura-eco">
-    <div class="st-grid">
-      <figure class="st-photo">
-        <img src="./assets/images/renders/feminino-spa/22-feminino-sq.webp" alt="Detalhe do feminino spa">
+  <section class="slide solo-hero solo-duo" id="s08" data-slide="08">
+    <div class="solo-grid">
+      <figure class="solo-tile">
+        <img src="./assets/images/renders/feminino-spa/ofuro-sauna-madeira-wide.webp" alt="Sala de crio e termo, vista ampla com ofurô em madeira, maca de massagem e roupões">
       </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/feminino-spa/crioterapia-termoterapia.webp" alt="Crioterapia e termoterapia, ofurô em madeira">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/feminino-spa/21-feminino-sq.webp" alt="Detalhe do feminino spa">
+      <figure class="solo-tile">
+        <img src="./assets/images/renders/feminino-spa/ofuro-sauna-madeira-tall.webp" alt="Ofurô em madeira escura com luminárias circulares e roupões ao fundo">
       </figure>
     </div>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Crio e Termo</span>
+    </figcaption>
   </section>
 
-  <section class="slide tempo-hero" id="s09" data-slide="09">
-    <figure class="th-photo fx-marmore-tempo">
-      <img src="./assets/images/renders/feminino-spa/42-feminino.webp" alt="Mármore e tempo do ritual do cuidado">
+  <section class="slide solo-hero" id="s-temperatura-eco" data-slide="s-temperatura-eco">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/feminino-spa/46-feminino.webp" alt="Spa feminino com vanity de mármore, vasos de copo de leite e cabine da sauna seca em vidro à direita">
     </figure>
-
-    <footer class="th-bottom">
-      <h2 class="th-title">O <em>Tempo</em></h2>
-      <div class="th-mark">
-        <span class="th-mark-rule" aria-hidden="true"></span>
-        <span class="th-mark-text">Pausa</span>
-      </div>
-    </footer>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Sauna Seca</span>
+    </figcaption>
   </section>
 
-  <section class="slide silent-triptych asymmetric" id="s-cuidado-eco" data-slide="s-cuidado-eco">
-    <div class="st-grid">
-      <figure class="st-photo st-hero">
-        <img src="./assets/images/renders/feminino-spa/26-feminino-sq.webp" alt="Detalhe do feminino spa">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/feminino-spa/20-feminino-sq.webp" alt="Detalhe do feminino spa">
-      </figure>
-      <figure class="st-photo">
-        <img src="./assets/images/renders/feminino-spa/19-feminino-sq.webp" alt="Detalhe do feminino spa">
-      </figure>
-    </div>
+  <section class="slide solo-hero" id="s09" data-slide="09">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/feminino-spa/massagem.webp" alt="Sala de massagem vista panorâmica, teto estrelado, maca central, prateleiras com óleos">
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Massagem</span>
+    </figcaption>
+  </section>
+
+  <section class="slide solo-hero" id="s-cuidado-eco" data-slide="s-cuidado-eco">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/feminino-spa/42-feminino.webp" alt="Spa feminino, antessala em mármore com cabines de vidro, roupão e luz cream">
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Feminino</span>
+    </figcaption>
   </section>
 
   <!-- SLIDE EXTRA · SOCIAL / EVENTO · solo silencioso do bar/DJ com Nike, espelho arco e Beat ao fundo -->
 
-  <section class="slide framed cinema solo-silent" id="s-social-evento" data-slide="s-social-evento">
-    <div class="framed-photo fx-dj-bar">
-      <img src="./assets/images/renders/dj/40-dj.webp" alt="Balcão inox com Nike e Red Bedroom, espelho arco gigante à direita, logo Beat ao fundo">
-    </div>
-    <footer class="bs-signature">
-      <span class="hairline"></span>
-      <div class="bs-signature-mark">Club</div>
-      <span class="hairline"></span>
-    </footer>
+  <section class="slide solo-hero" id="s-social-evento" data-slide="s-social-evento">
+    <figure class="solo-photo">
+      <img src="./assets/images/renders/dj/40-dj.webp" alt="Balcão inox com Nike e Red Bedroom, espelho arco gigante à direita, logo The Beat Life Club ao fundo">
+    </figure>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Club</span>
+    </figcaption>
   </section>
 
-  <section class="slide framed cinema batida-spread" id="s10" data-slide="10">
-    <div class="framed-photo fx-dj-salao">
-      <img src="./assets/images/renders/dj/41-dj.webp" alt="DJ no salão do The Beat Life Club">
-    </div>
-    <footer class="bs-signature">
-      <span class="hairline"></span>
-      <div class="bs-signature-mark">Private Club</div>
-      <span class="hairline"></span>
-    </footer>
-  </section>
-
-  <section class="slide intencao-hero" id="s11" data-slide="11">
-    <figure class="in-photo fx-social-lounge">
+  <section class="slide solo-hero" id="s11" data-slide="11">
+    <figure class="solo-photo">
       <img src="./assets/images/renders/social/64-social.webp" alt="Lounge social, sofá curvo e tapete">
     </figure>
-
-    <footer class="in-bottom">
-      <h2 class="in-title">Private <span class="dot">·</span> Wellness <span class="dot">·</span> Club</h2>
-      <div class="in-mark">
-        <span class="in-mark-rule" aria-hidden="true"></span>
-        <span class="in-mark-text">O Club</span>
-      </div>
-    </footer>
+    <figcaption class="solo-sig">
+      <span class="solo-sig-rule" aria-hidden="true"></span>
+      <span class="solo-sig-text">Private · Wellness · Club</span>
+    </figcaption>
   </section>
 
   <!-- SLIDE GRID · OS TERRITORIOS · 8 experiencias do club -->
@@ -6279,12 +7405,12 @@ body.overview .fs-toggle{display:none}
           </div>
           <p class="dual-dek">Coletivo, musical, imersivo. Transmissão magnética, WattRate e Coach By Color. A cadência vira cerimônia.</p>
           <div class="dual-partner">
-            <div class="p-mark p-mark-brand"><img src="./assets/images/parceiros/life-fitness/logo-black.svg" alt="Life Fitness"></div>
+            <div class="p-mark p-mark-brand"><img src="./assets/images/parceiros/life-fitness/logo/life-fitness-brand-black.svg" alt="Life Fitness"></div>
             <span class="tag">IC7 Indoor</span>
           </div>
           <div class="dual-tech">
             <span class="tech-label">Tecnologia</span>
-            <div class="tech-mark"><img src="./assets/images/parceiros/spivi/logo-header.webp" alt="Spivi"></div>
+            <div class="tech-mark"><img src="./assets/images/parceiros/spivi/logo/spivi-logo-header.png" alt="Spivi"></div>
           </div>
         </div>
       </article>
@@ -6298,7 +7424,7 @@ body.overview .fs-toggle{display:none}
           </div>
           <p class="dual-dek">Técnico, silencioso, preciso. FTP, cadência e simetria de força. A pedalada lida como ECG, bike por bike.</p>
           <div class="dual-partner">
-            <div class="p-mark p-mark-brand"><img src="./assets/images/parceiros/wattbike/logo-preto.webp" alt="Wattbike"></div>
+            <div class="p-mark p-mark-brand"><img src="./assets/images/parceiros/wattbike/logo/wattbike-logo-preto-sobre-branco.png" alt="Wattbike"></div>
             <span class="tag">Atom</span>
           </div>
           <div class="dual-tech">
@@ -6390,7 +7516,7 @@ body.overview .fs-toggle{display:none}
 
         <div class="bb-partner">
           <div class="bb-partner-head">
-            <img src="./assets/images/parceiros/dyson/logo.svg" alt="Dyson">
+            <img src="./assets/images/parceiros/dyson/logo/dyson-logo.svg" alt="Dyson">
             <div class="bb-partner-label">Supersonic em toda bancada</div>
           </div>
           <p class="bb-partner-dek">Secador de <em>assinatura</em> do vestiário. Parceria Dyson.</p>
@@ -6999,7 +8125,7 @@ body.overview .fs-toggle{display:none}
         <span class="dot"></span>
         <span class="rule"></span>
       </div>
-      <div class="fa-wordmark">Founders Collection</div>
+      <div class="fa-wordmark">The Founders</div>
       <div class="fa-signer">Cem memberships · Nº 001 a Nº 100</div>
     </header>
 
@@ -7028,10 +8154,13 @@ body.overview .fs-toggle{display:none}
   <!-- SLIDE · MEMBERSHIP · ESCADA DE ACESSO -->
 
   <section class="slide founders-documento" id="s26" data-slide="26">
-    <header class="fd-masthead fd-masthead-clean">
-      <div class="fd-eyebrow">Membership · Founders Collection</div>
+    <header class="fd-masthead">
       <h2 class="fd-title">Membership<span class="fd-title-colon">:</span> o <em>acesso</em>.</h2>
-      <div class="fd-filete" aria-hidden="true"></div>
+      <div class="fd-subnote">
+        <span>Setecentos títulos</span><span class="sep" aria-hidden="true"></span>
+        <span>Numerados 001 a 700</span><span class="sep" aria-hidden="true"></span>
+        <span>Vitalícios</span>
+      </div>
     </header>
 
     <div class="fd-body">
@@ -7039,27 +8168,38 @@ body.overview .fs-toggle{display:none}
         <div class="fd-column-head">A escada</div>
         <div class="fd-ladder" aria-label="Escada de lotes do Membership">
           <div class="fd-ladder-row current">
-            <span class="fd-ladder-lote">Founders</span>
+            <span class="fd-ladder-lote">
+              <span class="fd-ladder-lote-name">The Founders</span>
+              <span class="fd-ladder-lote-serial">Nº 001 a 100</span>
+            </span>
             <span class="fd-ladder-vagas">100 vagas</span>
             <span class="fd-ladder-preco">R$ 4.000</span>
           </div>
           <div class="fd-ladder-row">
-            <span class="fd-ladder-lote">Lote 2</span>
+            <span class="fd-ladder-lote">
+              <span class="fd-ladder-lote-name">Lote 02</span>
+              <span class="fd-ladder-lote-serial">Nº 101 a 350</span>
+            </span>
             <span class="fd-ladder-vagas">250 vagas</span>
             <span class="fd-ladder-preco">R$ 6.000</span>
           </div>
           <div class="fd-ladder-row">
-            <span class="fd-ladder-lote">Lote 3</span>
+            <span class="fd-ladder-lote">
+              <span class="fd-ladder-lote-name">Lote 03</span>
+              <span class="fd-ladder-lote-serial">Nº 351 a 600</span>
+            </span>
             <span class="fd-ladder-vagas">250 vagas</span>
             <span class="fd-ladder-preco">R$ 8.000</span>
           </div>
           <div class="fd-ladder-row final">
-            <span class="fd-ladder-lote">Lote 4</span>
+            <span class="fd-ladder-lote">
+              <span class="fd-ladder-lote-name">Lote 04</span>
+              <span class="fd-ladder-lote-serial">Nº 601 a 700</span>
+            </span>
             <span class="fd-ladder-vagas">100 vagas</span>
             <span class="fd-ladder-preco">R$ 10.000</span>
           </div>
         </div>
-        <p class="fd-ficha">Inauguração · 13 de junho de 2026 · Membership obrigatório</p>
       </div>
 
       <span class="fd-divider" aria-hidden="true"></span>
@@ -7069,46 +8209,49 @@ body.overview .fs-toggle{display:none}
         <div class="fd-rights">
           <article class="fd-right-item">
             <div class="fd-right-num">01</div>
-            <h3 class="fd-right-name">Agendamento.</h3>
-            <p class="fd-right-body">Preferência na fila em todos os serviços <em>do club</em>.</p>
+            <h3 class="fd-right-name">Convidados.</h3>
+            <p class="fd-right-body">Dois por mês, <em>uma diária cada</em>, a critério do Founder. Único acesso ao Club fora do título.</p>
           </article>
           <article class="fd-right-item">
             <div class="fd-right-num">02</div>
-            <h3 class="fd-right-name">Convidados.</h3>
-            <p class="fd-right-body"><em>Dois por mês</em>, a critério do Founder.</p>
+            <h3 class="fd-right-name">Plus-One Familiar.</h3>
+            <p class="fd-right-body">Segundo título no Lote 02 ao <em>preço Founder</em>, para cônjuge, pai ou mãe. Limite de um.</p>
           </article>
           <article class="fd-right-item">
             <div class="fd-right-num">03</div>
-            <h3 class="fd-right-name">Eventos.</h3>
-            <p class="fd-right-body">Convites para ativações exclusivas ao longo do ano.</p>
+            <h3 class="fd-right-name">Indicação Founder.</h3>
+            <p class="fd-right-body">Indicações para Lote 02 e Lote 03 com <em>abono de R$ 1.000</em> no título indicado, sujeito a vagas.</p>
           </article>
           <article class="fd-right-item">
             <div class="fd-right-num">04</div>
-            <h3 class="fd-right-name">Kit Founders.</h3>
-            <p class="fd-right-body">Certificado, card e <em>Book Founders</em> numerados de Nº 001 a Nº 100.</p>
+            <h3 class="fd-right-name">Direito de Preferência.</h3>
+            <p class="fd-right-body">Cada novo lote oferecido aos Founders <em>antes do mercado</em>.</p>
           </article>
           <article class="fd-right-item">
             <div class="fd-right-num">05</div>
-            <h3 class="fd-right-name">Primeira recusa.</h3>
-            <p class="fd-right-body">Preferência de compra <em>nos lotes seguintes</em>.</p>
+            <h3 class="fd-right-name">Sucessão Familiar.</h3>
+            <p class="fd-right-body">Título segue por <em>indicação ou herança</em>, com curadoria do Club. O número permanece, o nome se transmite.</p>
           </article>
           <article class="fd-right-item">
             <div class="fd-right-num">06</div>
-            <h3 class="fd-right-name">Transferibilidade.</h3>
-            <p class="fd-right-body">Título segue por <em>indicação ou herança</em>, com curadoria do club.</p>
+            <h3 class="fd-right-name">Prioridade em Eventos.</h3>
+            <p class="fd-right-body">Acesso prioritário a ativações exclusivas, <em>em todo o tempo do membership</em>.</p>
           </article>
           <article class="fd-right-item">
             <div class="fd-right-num">07</div>
-            <h3 class="fd-right-name">Coleções.</h3>
-            <p class="fd-right-body">Peças numeradas futuras abrem <em>antes, para os cem</em>.</p>
+            <h3 class="fd-right-name">Editorial Anual.</h3>
+            <p class="fd-right-body">Edição <em>limitada e numerada</em>. Retrospectiva do ano e dados da comunidade.</p>
           </article>
         </div>
       </div>
     </div>
 
-    <footer class="fd-closure">
-      <p class="fd-cta">Reserve seu número <em>antes do centésimo</em>.</p>
-      <div class="fd-attestation">Conversa com um consultor Life Club</div>
+    <footer class="fd-footer">
+      <span class="fd-footer-rule" aria-hidden="true"></span>
+      <span class="fd-footer-diamond" aria-hidden="true"></span>
+      <p class="fd-ficha">Reserva formalizada por <em>Carta de Reserva</em></p>
+      <span class="fd-footer-diamond" aria-hidden="true"></span>
+      <span class="fd-footer-rule" aria-hidden="true"></span>
     </footer>
   </section>
 
@@ -7325,6 +8468,170 @@ body.overview .fs-toggle{display:none}
     </footer>
   </section>
 
+  <!-- SLIDE 26 · FOUNDERS · Processo de ativação · sub-marca Founders Collection -->
+
+  <section class="slide founders-processo" id="s-founders-processo" data-slide="s-founders-processo">
+    <div class="cr-frame" aria-hidden="true"></div>
+
+    <header class="cr-header">
+      <p class="cr-eyebrow"><span>Membership</span><span class="sep" aria-hidden="true"></span><span>Lote Fundador</span></p>
+      <h1 class="cr-title">The <em>Founders</em>.</h1>
+      <p class="cr-subtitle">Os cem membros que <em>originam o Club</em>. O Membership mais raro.</p>
+    </header>
+
+    <main class="fp-body">
+      <section class="fp-timeline-section">
+        <p class="fp-section-head">Processo de ativação</p>
+        <ol class="fp-timeline">
+          <li class="fp-step fp-step-active">
+            <span class="fp-step-tag">Comece aqui</span>
+            <div class="fp-step-num">01</div>
+            <h3 class="fp-step-name">Carta de <em>Reserva</em></h3>
+            <p class="fp-step-desc">Separa seu acesso. <em>Anterior ao contrato.</em></p>
+          </li>
+          <li class="fp-step">
+            <span class="fp-step-tag" aria-hidden="true"></span>
+            <div class="fp-step-num">02</div>
+            <h3 class="fp-step-name">Emissão do <em>Membership</em></h3>
+            <p class="fp-step-desc">Seu número entra em seu nome, <em>na confirmação do pagamento</em>.</p>
+          </li>
+          <li class="fp-step">
+            <span class="fp-step-tag" aria-hidden="true"></span>
+            <div class="fp-step-num">03</div>
+            <h3 class="fp-step-name">Plano e <em>pagamento</em></h3>
+            <p class="fp-step-desc">The One ou Life Code. Mensalidade <em>após a inauguração</em>.</p>
+          </li>
+          <li class="fp-step">
+            <span class="fp-step-tag" aria-hidden="true"></span>
+            <div class="fp-step-num">04</div>
+            <h3 class="fp-step-name">Vida no <em>Club</em></h3>
+            <p class="fp-step-desc">Você vive como Founder. <em>Para sempre.</em></p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fp-pillars-section">
+        <p class="fp-section-head">Por que Founders</p>
+        <ul class="fp-pillars">
+          <li class="fp-pillar">
+            <span class="fp-pillar-mark">·</span>
+            <span class="fp-pillar-text">Cem nomes. <em>Uma única vez na história do Club.</em></span>
+          </li>
+          <li class="fp-pillar">
+            <span class="fp-pillar-mark">·</span>
+            <span class="fp-pillar-text">O lote de <em>menor investimento</em>.</span>
+          </li>
+          <li class="fp-pillar">
+            <span class="fp-pillar-mark">·</span>
+            <span class="fp-pillar-text"><em>Benefícios que não voltam:</em> transferibilidade, primeira recusa nos lotes seguintes, kit numerado, coleções abertas antes dos demais.</span>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="cr-closure">
+      <div class="cr-closure-rule" aria-hidden="true">
+        <span class="line"></span>
+        <span class="diamond"></span>
+        <span class="line"></span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- SLIDE 27 · CARTA DE RESERVA · título ativo de Membership · sub-marca Founders Collection -->
+
+  <section class="slide carta-titulo" id="s-carta-reserva" data-slide="s-carta-reserva">
+    <div class="cr-frame" aria-hidden="true"></div>
+    <div class="ct-watermark" aria-hidden="true"><span class="ct-watermark-glyph">Nº</span></div>
+
+    <header class="cr-header">
+      <p class="cr-eyebrow"><span>Documento bilateral</span><span class="sep" aria-hidden="true"></span><span>Numerado</span><span class="sep" aria-hidden="true"></span><span>Lote Fundador</span></p>
+      <h1 class="cr-title">Carta de <em>Reserva</em>.</h1>
+      <p class="cr-subtitle">Reserve seu <em>Membership</em>. Escolha seu <em>número</em>.</p>
+    </header>
+
+    <main class="ct-body">
+      <article class="ct-card">
+        <p class="ct-card-rotulo">
+          <span>Membership</span>
+          <span class="ct-card-rotulo-diamond" aria-hidden="true"></span>
+          <em>The Founders</em>
+        </p>
+
+        <form class="ct-form" id="ct-reserva-form" novalidate>
+          <div class="ct-fields">
+            <div class="ct-field ct-field-name">
+              <label class="ct-field-label" for="ct-input-name">O seu nome</label>
+              <input class="ct-input ct-input-name" id="ct-input-name" name="name"
+                     type="text" placeholder="seu nome aqui" autocomplete="name"
+                     spellcheck="false" maxlength="80">
+              <span class="ct-field-line" aria-hidden="true"></span>
+            </div>
+            <div class="ct-field ct-field-num">
+              <label class="ct-field-label" for="ct-input-num">O seu número</label>
+              <span class="ct-num-row">
+                <span class="ct-field-no" aria-hidden="true">Nº</span>
+                <span class="ct-num-control">
+                  <input class="ct-input ct-input-num" id="ct-input-num" name="number"
+                         type="text" inputmode="numeric" pattern="[0-9]*"
+                         value="001" maxlength="3" aria-label="Número do Founder, de 001 a 100">
+                  <span class="ct-num-spin" aria-hidden="false">
+                    <button type="button" class="ct-num-spin-btn" data-dir="up" aria-label="Próximo número">
+                      <svg viewBox="0 0 14 9" aria-hidden="true"><path d="M1 8 L7 1 L13 8"/></svg>
+                    </button>
+                    <button type="button" class="ct-num-spin-btn" data-dir="down" aria-label="Número anterior">
+                      <svg viewBox="0 0 14 9" aria-hidden="true"><path d="M1 1 L7 8 L13 1"/></svg>
+                    </button>
+                  </span>
+                </span>
+                <span class="ct-field-divider" aria-hidden="true">/</span>
+                <span class="ct-field-total">100</span>
+              </span>
+              <span class="ct-field-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="ct-card-validity">
+            <div class="ct-validity-line">
+              <span class="ct-validity-rule" aria-hidden="true"></span>
+              <span class="ct-validity-text">Reserva válida por <em>cinco dias</em>.</span>
+            </div>
+            <div class="ct-validity-line">
+              <span class="ct-validity-rule" aria-hidden="true"></span>
+              <span class="ct-validity-text">Membership emitido <em>na confirmação do pagamento</em>.</span>
+            </div>
+          </div>
+
+          <p class="ct-card-disclaimer">
+            Esta Carta destina-se à <em>reserva da vaga e do número</em> e não constitui compromisso financeiro. O pagamento se dá apenas na emissão do Membership, conforme contrato de adesão.
+          </p>
+
+          <div class="ct-submit-row">
+            <p class="ct-submit-helper">Confirmaremos por contato em até 24h. A Carta oficial é emitida em seguida.</p>
+            <button type="submit" class="ct-submit" id="ct-reservar">
+              <span class="ct-submit-text">Reservar</span>
+              <span class="ct-submit-arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="ct-stamp" aria-hidden="true">
+          Reserva
+          <span class="ct-stamp-sub">Aberta</span>
+        </div>
+      </article>
+    </main>
+
+    <footer class="cr-closure">
+      <div class="cr-closure-rule" aria-hidden="true">
+        <span class="line"></span>
+        <span class="diamond"></span>
+        <span class="line"></span>
+      </div>
+      <p class="cr-statement">Reserve hoje. <em>Founders são cem, em uma única edição.</em></p>
+    </footer>
+  </section>
+
   <!-- SLIDE 28 · ADD-ONS · todos os complementos opcionais ao membership -->
 
   <section class="slide adicionais" id="s28" data-slide="28">
@@ -7385,28 +8692,50 @@ body.overview .fs-toggle{display:none}
   </section>
 </div>
 
-<nav class="nav" data-visible="true" aria-label="Navegação do deck">
-  <span id="prev" class="ctrl" role="button" aria-label="Slide anterior">&larr;</span>
-  <div class="progress" aria-hidden="true"><span class="bar"></span></div>
-  <span id="count">01</span>
-  <span class="sep">/</span>
-  <span id="total" class="total">00</span>
-  <span id="next" class="ctrl" role="button" aria-label="Próximo slide">&rarr;</span>
+<nav class="dock" data-visible="true" aria-label="Controles da apresentação">
+  <button id="prev" class="dock-btn" type="button" aria-label="Slide anterior" title="Slide anterior (←)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <div class="dock-counter" aria-live="polite">
+    <span id="count" class="num">01</span>
+    <span class="sep">/</span>
+    <span id="total" class="total">00</span>
+    <div class="dock-progress" aria-hidden="true"><span class="bar"></span></div>
+  </div>
+  <button id="next" class="dock-btn" type="button" aria-label="Próximo slide" title="Próximo slide (→)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <span class="dock-divider" aria-hidden="true"></span>
+  <button class="dock-btn dock-overview-btn" type="button" aria-label="Visão geral dos slides" title="Visão geral (O)">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/>
+      <rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/>
+    </svg>
+  </button>
+  <button class="dock-btn dock-blackout-btn" type="button" aria-label="Tela preta para pausa" title="Tela preta (B)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.5" fill="currentColor" stroke="none"/></svg>
+  </button>
+  <button class="dock-btn dock-help-btn" type="button" aria-label="Atalhos do teclado" title="Atalhos (?)">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5"/>
+      <path d="M9.5 9.2a2.6 2.6 0 1 1 3.9 2.2c-.7.5-1.4 1-1.4 2"/>
+      <circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
+  <button class="dock-btn fs-toggle" type="button" aria-label="Alternar tela cheia" title="Tela cheia (F)">
+    <svg class="fs-icon-enter" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/>
+    </svg>
+    <svg class="fs-icon-exit" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4v5H4"/><path d="M15 4v5h5"/><path d="M9 20v-5H4"/><path d="M15 20v-5h5"/>
+    </svg>
+  </button>
 </nav>
 
 <div class="overview-label" aria-hidden="true">Visão geral</div>
 
+<!-- Botao mantido no DOM por compatibilidade do JS, oculto via CSS (substituido pela dock) -->
 <button class="enter-presenter" type="button" aria-label="Entrar em modo apresentação">Entrar em modo apresentação</button>
-
-<!-- Fullscreen toggle persistente (visivel em todos slides) -->
-<button class="fs-toggle" type="button" data-visible="true" aria-label="Alternar tela cheia" title="Alternar tela cheia (F)">
-  <svg class="fs-icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M4 9l0 -5h5"/><path d="M20 9l0 -5h-5"/><path d="M4 15l0 5h5"/><path d="M20 15l0 5h-5"/>
-  </svg>
-  <svg class="fs-icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M9 4l0 5h-5"/><path d="M15 4l0 5h5"/><path d="M9 20l0 -5h-5"/><path d="M15 20l0 -5h5"/>
-  </svg>
-</button>
 
 <!-- Blackout / Whiteout overlay -->
 <div class="presenter-blackout" role="presentation" aria-hidden="true"></div>
@@ -7453,12 +8782,15 @@ body.overview .fs-toggle{display:none}
 <script>
   const slides=[...document.querySelectorAll('.slide')];
   const total=slides.length;
-  const nav=document.querySelector('.nav');
-  const bar=document.querySelector('.nav .progress .bar');
+  const dock=document.querySelector('.dock');
+  const bar=document.querySelector('.dock-progress .bar');
   const countEl=document.getElementById('count');
   const totalEl=document.getElementById('total');
   const presenterBtn=document.querySelector('.enter-presenter');
   const fsToggle=document.querySelector('.fs-toggle');
+  const overviewBtn=document.querySelector('.dock-overview-btn');
+  const blackoutBtn=document.querySelector('.dock-blackout-btn');
+  const helpBtn=document.querySelector('.dock-help-btn');
   const blackout=document.querySelector('.presenter-blackout');
   const helpOverlay=document.querySelector('.help-overlay');
   const helpCard=document.querySelector('.help-card');
@@ -7469,6 +8801,26 @@ body.overview .fs-toggle{display:none}
   let hudTimer=null;
   let jumpBuf='';
   let jumpTimer=null;
+  let cursorTimer=null;
+  const baseTitle='The Beat Life Club';
+  const getSlideTitle=(slide)=>{
+    const h=slide.querySelector('h1, h2');
+    if(!h) return null;
+    return h.textContent.trim().replace(/\s+/g,' ').replace(/\.$/,'');
+  };
+  const syncTitle=()=>{
+    const t=getSlideTitle(slides[i]);
+    const num=`${String(i+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
+    document.title=t?`${t} · ${num} · ${baseTitle}`:`${num} · ${baseTitle}`;
+  };
+  const armCursorHide=()=>{
+    document.body.classList.remove('cursor-hidden');
+    clearTimeout(cursorTimer);
+    if(!document.fullscreenElement) return;
+    cursorTimer=setTimeout(()=>{
+      if(document.fullscreenElement) document.body.classList.add('cursor-hidden');
+    },2500);
+  };
 
   // Esconder fullscreen toggle se API nao suportada (iOS Safari)
   const supportsFs=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
@@ -7493,13 +8845,12 @@ body.overview .fs-toggle{display:none}
   totalEl.textContent=String(total).padStart(2,'0');
 
   const showHud=()=>{
-    nav.setAttribute('data-visible','true');
-    fsToggle.setAttribute('data-visible','true');
+    dock.setAttribute('data-visible','true');
     clearTimeout(hudTimer);
     hudTimer=setTimeout(()=>{
-      nav.setAttribute('data-visible','false');
-      fsToggle.setAttribute('data-visible','false');
-    },2200);
+      if(dock.matches(':hover')) return;
+      dock.setAttribute('data-visible','false');
+    },2400);
   };
 
   const go=(n)=>{
@@ -7508,6 +8859,7 @@ body.overview .fs-toggle{display:none}
     countEl.textContent=String(i+1).padStart(2,'0');
     bar.style.width=((i+1)/total*100)+'%';
     document.body.dataset.slide=String(i);
+    syncTitle();
     if(document.body.classList.contains('overview')) return;
     showHud();
   };
@@ -7515,7 +8867,7 @@ body.overview .fs-toggle{display:none}
   const toggleOverview=(force)=>{
     const on=typeof force==='boolean'?force:!document.body.classList.contains('overview');
     document.body.classList.toggle('overview',on);
-    if(on){nav.setAttribute('data-visible','false');fsToggle.setAttribute('data-visible','false');clearTimeout(hudTimer);}
+    if(on){dock.setAttribute('data-visible','false');clearTimeout(hudTimer);}
     else{showHud();}
   };
 
@@ -7568,6 +8920,10 @@ body.overview .fs-toggle{display:none}
   document.addEventListener('keydown',(e)=>{
     const key=e.key.toLowerCase();
 
+    // Foco em campo editavel: deixa o navegador / inputs gerirem (digitos, setas, espaco etc.)
+    const ae=document.activeElement;
+    if(ae && (ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.isContentEditable)) return;
+
     // Help overlay tem prioridade
     if(helpOverlay.getAttribute('data-visible')==='true'){
       if(e.key==='Escape'||key==='?'||key==='h'){showHelp(false);return;}
@@ -7611,6 +8967,7 @@ body.overview .fs-toggle{display:none}
 
   document.addEventListener('mousemove',()=>{
     if(!document.body.classList.contains('overview')) showHud();
+    armCursorHide();
   },{passive:true});
 
   document.getElementById('next').onclick=()=>go(i+1);
@@ -7621,6 +8978,9 @@ body.overview .fs-toggle{display:none}
   });
 
   fsToggle.addEventListener('click',(e)=>{e.stopPropagation();toggleFullscreen();});
+  overviewBtn?.addEventListener('click',(e)=>{e.stopPropagation();toggleOverview();});
+  blackoutBtn?.addEventListener('click',(e)=>{e.stopPropagation();toggleBlackout('black');});
+  helpBtn?.addEventListener('click',(e)=>{e.stopPropagation();showHelp();});
 
   // Clique no overlay de blackout sai do modo
   blackout.addEventListener('click',()=>setBlackout(null));
@@ -7633,17 +8993,98 @@ body.overview .fs-toggle{display:none}
     const isFs=!!document.fullscreenElement;
     fsToggle.classList.toggle('is-fullscreen',isFs);
     if(isFs){
-      nav.setAttribute('data-visible','false');
-      fsToggle.setAttribute('data-visible','false');
+      dock.setAttribute('data-visible','false');
       clearTimeout(hudTimer);
       hudTimer=setTimeout(()=>showHud(),3000);
+      armCursorHide();
+    }else{
+      clearTimeout(cursorTimer);
+      document.body.classList.remove('cursor-hidden');
     }
+  });
+
+  // Trava de zoom: previne Ctrl+wheel e Ctrl++/Ctrl+- (Ctrl+0 reset segue passando)
+  window.addEventListener('wheel',(e)=>{
+    if(e.ctrlKey||e.metaKey) e.preventDefault();
+  },{passive:false});
+  window.addEventListener('keydown',(e)=>{
+    if(!(e.ctrlKey||e.metaKey)) return;
+    if(e.key==='='||e.key==='+'||e.key==='-'||e.key==='_') e.preventDefault();
   });
 
   const fromHash=()=>{const h=location.hash.slice(1);if(!h)return;const k=slides.findIndex(s=>s.id===h);if(k>=0)go(k);};
   fromHash();
   window.addEventListener('hashchange',fromHash);
   go(i);
+
+  // Carta de Reserva · interacao do formulario (spinner numerico + submit)
+  (()=>{
+    const form=document.getElementById('ct-reserva-form');
+    if(!form)return;
+    const nameInput=document.getElementById('ct-input-name');
+    const numInput=document.getElementById('ct-input-num');
+    const submitBtn=document.getElementById('ct-reservar');
+    if(!nameInput||!numInput||!submitBtn)return;
+
+    const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+    const fmt=n=>String(clamp(n,1,100)).padStart(3,'0');
+    const getNum=()=>{
+      const v=parseInt(numInput.value,10);
+      return isNaN(v)||v<1?1:v;
+    };
+
+    form.querySelectorAll('.ct-num-spin-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const dir=btn.dataset.dir==='up'?1:-1;
+        numInput.value=fmt(getNum()+dir);
+      });
+    });
+
+    numInput.addEventListener('input',()=>{
+      numInput.value=numInput.value.replace(/[^0-9]/g,'').slice(0,3);
+    });
+    numInput.addEventListener('blur',()=>{numInput.value=fmt(getNum())});
+    numInput.addEventListener('focus',()=>{
+      // Selecionar tudo facilita troca rapida do numero
+      requestAnimationFrame(()=>numInput.select());
+    });
+    numInput.addEventListener('keydown',(e)=>{
+      if(e.key==='ArrowUp'){e.preventDefault();numInput.value=fmt(getNum()+1)}
+      if(e.key==='ArrowDown'){e.preventDefault();numInput.value=fmt(getNum()-1)}
+    });
+
+    form.addEventListener('submit',(e)=>{
+      e.preventDefault();
+      const name=nameInput.value.trim();
+      const number=fmt(getNum());
+      if(!name){
+        nameInput.focus();
+        nameInput.classList.add('ct-input-error');
+        setTimeout(()=>nameInput.classList.remove('ct-input-error'),1400);
+        return;
+      }
+
+      // Por enquanto: feedback visual + log estruturado.
+      // Futuro: gerar a Carta oficial em PDF (ja temos o template em
+      // carta-de-reserva-a4.html), preencher os campos e baixar/enviar.
+      console.log('[Carta de Reserva] Reserva solicitada:',{
+        name,
+        number,
+        timestamp:new Date().toISOString()
+      });
+
+      const txt=submitBtn.querySelector('.ct-submit-text');
+      const original=txt.textContent;
+      submitBtn.classList.add('is-success');
+      txt.textContent='Reservado';
+      submitBtn.disabled=true;
+      setTimeout(()=>{
+        submitBtn.classList.remove('is-success');
+        submitBtn.disabled=false;
+        txt.textContent=original;
+      },2600);
+    });
+  })();
 </script>
 </body>
 </html>
