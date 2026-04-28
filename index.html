@@ -3516,6 +3516,12 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   letter-spacing:.3em;text-transform:uppercase;
   color:var(--oliva);
 }
+
+/* MODIFIER · variante "sem preço" para apresentação inicial do plano.
+   Mantém estrutura/footprint exatos · apenas oculta valores via visibility. */
+.slide.plan-hero.no-pricing .ph-price{
+  visibility:hidden;
+}
 .slide.plan-hero .ph-oblig{
   font-family:var(--display);font-style:italic;font-weight:300;
   font-size:clamp(13px,1.05vw,18px);
@@ -4241,13 +4247,16 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
 
 /* ============ LC-LAYOUT · variante Life Code (Protocolo como hero) ============ */
 .slide.plan-hero.plan-grouped.lc-layout{
-  padding:2.8vh 5vw 2.6vh;
-  gap:1vh;
+  padding:2vh 5vw 1.8vh;
+  gap:.6vh;
+}
+.slide.plan-hero.plan-grouped.lc-layout .ph-col{
+  gap:2vh;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-groups{
   grid-template-columns:1.5fr 1px 1fr;
   gap:0 3.4vw;
-  padding:1.4vh 0 .6vh;
+  padding:.8vh 0 .4vh;
   position:relative;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-groups::before{
@@ -4262,15 +4271,15 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   padding-left:1.6vw;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-herdado-callout{
-  padding:1.1vh 0;margin-bottom:0;
+  padding:.8vh 0;margin-bottom:0;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-herdado-label{
-  font-size:clamp(11px,.92vw,15px);
+  font-size:clamp(10px,.84vw,13px);
   font-weight:500;letter-spacing:.5em;
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-herdado-line{
   font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(13px,1.08vw,19px);
+  font-size:clamp(12px,.96vw,17px);
   letter-spacing:.005em;opacity:.88;
 }
 
@@ -4308,14 +4317,14 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
   list-style:none;padding:0;margin:0;
   display:flex;flex-direction:column;
 }
-.slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list{gap:1.5vh}
+.slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list{gap:1vh}
 .slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list li{
-  display:flex;flex-direction:column;gap:.4vh;
-  padding-top:1.4vh;
+  display:flex;flex-direction:column;gap:.3vh;
+  padding-top:1vh;
   border-top:1px solid var(--pu-hair);
 }
 .slide.plan-hero.plan-grouped .ph-cat-hero .ph-items-list li:first-child{
-  border-top:none;padding-top:1.2vh;
+  border-top:none;padding-top:.8vh;
   position:relative;
   padding-left:1.4vw;
 }
@@ -4323,18 +4332,18 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
 .slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-items-list li:first-child::before{
   content:"";
   position:absolute;
-  left:0;top:1.6vh;bottom:.6vh;
+  left:0;top:1.2vh;bottom:.4vh;
   width:2px;
   background:linear-gradient(180deg, var(--pu-filete) 0%, var(--pu-accent) 100%);
 }
 .slide.plan-hero.plan-grouped.lc-layout .ph-cat-hero .ph-items-list li:first-child .ph-lc-name{
-  font-size:clamp(24px,2.05vw,40px);
+  font-size:clamp(20px,1.7vw,32px);
   line-height:1.05;
   letter-spacing:-.005em;
 }
 .slide.plan-hero.plan-grouped .ph-lc-name{
   font-family:var(--display);font-weight:500;
-  font-size:clamp(20px,1.74vw,33px);
+  font-size:clamp(17px,1.45vw,27px);
   line-height:1.1;color:var(--pu-ink);
   letter-spacing:.003em;
 }
@@ -4357,29 +4366,29 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
 }
 .slide.plan-hero.plan-grouped .ph-lc-desc{
   font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(13px,1.1vw,20px);
-  line-height:1.45;color:var(--pu-ink);opacity:.78;
-  margin-top:.4vh;max-width:52ch;
+  font-size:clamp(12px,.96vw,17px);
+  line-height:1.35;color:var(--pu-ink);opacity:.78;
+  margin-top:.3vh;max-width:52ch;
 }
 
 /* Sub-categorias · Mapeamento, Beat Care, Pilates */
 .slide.plan-hero.plan-grouped.lc-layout .ph-cat-sub .ph-cat-label{
   font-size:clamp(11px,.92vw,15px);
 }
-.slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list{gap:1vh}
+.slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list{gap:.6vh}
 .slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list li{
   display:grid;
   grid-template-columns:1fr auto;
   align-items:baseline;
   column-gap:1vw;row-gap:.1vh;
-  padding-top:1vh;
+  padding-top:.7vh;
   border-top:1px solid var(--pu-hair);
 }
 .slide.plan-hero.plan-grouped .ph-cat-sub .ph-items-list li:first-child{
   border-top:none;padding-top:0;
 }
 .slide.plan-hero.plan-grouped .ph-cat-sub .ph-lc-name{
-  font-size:clamp(16px,1.42vw,26px);
+  font-size:clamp(14px,1.18vw,21px);
 }
 /* Meta direita · anotação editorial leve */
 .slide.plan-hero.plan-grouped.lc-layout .ph-cat-sub .ph-lc-meta{
@@ -4403,17 +4412,17 @@ dl.pillars dd:nth-of-type(3){grid-column:3;grid-row:2}
 }
 
 /* Quick-cats · Beat Care, Pilates */
-.slide.plan-hero.plan-grouped .ph-cat-quick{gap:.6vh}
+.slide.plan-hero.plan-grouped .ph-cat-quick{gap:.4vh}
 .slide.plan-hero.plan-grouped.lc-layout .ph-cat-quick .ph-cat-label{
   display:flex;align-items:center;justify-content:space-between;gap:1em;
-  padding-bottom:1vh;
+  padding-bottom:.7vh;
 }
 .slide.plan-hero.plan-grouped .ph-quick-line{
   font-family:var(--serif);font-style:italic;font-weight:400;
-  font-size:clamp(14px,1.18vw,20px);
-  line-height:1.4;color:var(--pu-ink);opacity:.85;
+  font-size:clamp(12px,1vw,17px);
+  line-height:1.35;color:var(--pu-ink);opacity:.85;
   letter-spacing:.005em;
-  padding-top:.4vh;
+  padding-top:.3vh;
 }
 /* Chip "Ilimitado" · selo de valor */
 .slide.plan-hero.plan-grouped.lc-layout .ph-ilimitado{
@@ -6978,6 +6987,128 @@ body.overview .overview-label{display:block}
   font-style:italic;color:var(--fc-aurum);font-weight:400;
 }
 
+/* ============================================================
+   CARTA DE MEMBERSHIP · adições sobre o template Carta
+   - Carimbo de data no canto superior esquerdo (efeito cartório)
+   - Rubrica do emissor (flourish caligráfico + label · linha compacta)
+   - Placeholders em itálico, cerimoniais, indicando preenchimento
+   - Compactação vertical do card vs Carta de Reserva
+   ============================================================ */
+
+/* HEADER · título e ritmo ajustados para acomodar o card mais alto */
+.slide.carta-titulo.carta-membership .cr-title{
+  font-size:clamp(46px,5vw,92px);
+}
+.slide.carta-titulo.carta-membership .cr-header{
+  gap:.6vh;
+}
+.slide.carta-titulo.carta-membership .ct-body{
+  padding:.6vh 0;
+  margin-top:1.2vh;
+}
+
+/* CARD · paddings, gap e elementos comprimidos para evitar overflow */
+.slide.carta-titulo.carta-membership .ct-card{
+  padding:3.8vh 4.6vw 3vh;
+  gap:1.9vh;
+}
+.slide.carta-titulo.carta-membership .ct-input-name{
+  font-size:clamp(24px,2.4vw,40px);
+  margin-top:.6vh;
+}
+.slide.carta-titulo.carta-membership .ct-num-row{
+  font-size:clamp(32px,3.4vw,56px);
+  margin-top:.6vh;
+}
+.slide.carta-titulo.carta-membership .ct-card-validity{
+  padding-top:1.4vh;
+}
+.slide.carta-titulo.carta-membership .ct-card-disclaimer{
+  padding-top:1.2vh;
+  font-size:clamp(10.5px,.78vw,13px);
+  line-height:1.5;
+}
+.slide.carta-titulo.carta-membership .ct-submit-row{
+  padding-top:1.4vh;
+  gap:1.2vh;
+}
+.slide.carta-titulo.carta-membership .ct-submit{
+  padding:1.2vh 2.4vw;
+}
+
+/* Timbre do emissor · lockup tipográfico (espelha o ct-card-rotulo do topo) */
+.slide.carta-titulo.carta-membership .ct-signature{
+  display:flex;align-items:center;justify-content:center;gap:1.1vw;
+  margin:.6vh 0 0;
+  padding:0 4vw;
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(9px,.76vw,12px);
+  letter-spacing:.42em;text-transform:uppercase;
+  color:rgba(184,168,122,.78);
+  text-align:center;
+  position:relative;z-index:3;
+  opacity:0;transform:translateY(8px);
+}
+.slide.carta-titulo.carta-membership .ct-signature::before,
+.slide.carta-titulo.carta-membership .ct-signature::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg, transparent 0%, rgba(184,168,122,.42) 100%);
+}
+.slide.carta-titulo.carta-membership .ct-signature::after{
+  background:linear-gradient(90deg, rgba(184,168,122,.42) 0%, transparent 100%);
+}
+.slide.carta-titulo.carta-membership.active .ct-signature{
+  animation:cr-rise 1500ms var(--ease-out) 1500ms forwards;
+}
+.slide.carta-titulo.carta-membership .ct-signature-diamond{
+  width:4px;height:4px;background:var(--fc-aurum);
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+.slide.carta-titulo.carta-membership .ct-signature em{
+  font-style:italic;
+  color:var(--fc-aurum);
+  font-weight:500;
+  letter-spacing:.22em;
+  text-transform:none;
+  font-family:var(--display);
+  font-size:1.2em;
+}
+
+/* Placeholders dos inputs vazios · itálico cerimonial, convida o preenchimento */
+.slide.carta-titulo.carta-membership .ct-input-name.ct-input-empty::placeholder{
+  color:rgba(125,108,68,.42);
+  font-style:italic;
+  font-weight:300;
+  letter-spacing:.04em;
+  font-size:.62em;
+  text-transform:lowercase;
+  opacity:1;
+}
+.slide.carta-titulo.carta-membership .ct-input-num.ct-input-empty::placeholder{
+  color:rgba(125,108,68,.45);
+  font-style:normal;
+  font-weight:300;
+  letter-spacing:0;
+  opacity:1;
+}
+/* Pulse sutil quando o campo está vazio · sinaliza "preenche aqui" */
+.slide.carta-titulo.carta-membership .ct-field-name .ct-field-line{
+  animation:cm-pulse 2400ms ease-in-out infinite;
+}
+.slide.carta-titulo.carta-membership .ct-field-num .ct-input-num:placeholder-shown{
+  border-bottom-color:rgba(184,168,122,.7);
+  animation:cm-pulse-num 2400ms ease-in-out infinite;
+}
+@keyframes cm-pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.55}
+}
+@keyframes cm-pulse-num{
+  0%,100%{border-bottom-color:rgba(184,168,122,.42)}
+  50%{border-bottom-color:rgba(184,168,122,.85)}
+}
+
 @keyframes cr-cursor{
   0%,40%,100%{opacity:.2}
   50%,90%{opacity:.95}
@@ -8255,7 +8386,119 @@ body.overview .overview-label{display:block}
     </footer>
   </section>
 
-  <!-- SLIDE 29 · THE ONE · plano comercial tipográfico (5 categorias) -->
+  <!-- SLIDE 29A · THE ONE (sem preço) · versão de apresentação · sem fricção comercial -->
+
+  <section class="slide plan-hero plan-unified plan-grouped no-pricing" id="s24-noprice" data-slide="s24-noprice">
+    <header class="ph-header">
+      <div class="ph-eyebrow">Membership · The One</div>
+      <h2 class="ph-title">The <em>One</em>.</h2>
+      <p class="ph-anchor">Acesso completo a the club.</p>
+      <div class="ph-filete" aria-hidden="true"></div>
+    </header>
+
+    <div class="ph-groups">
+      <div class="ph-col ph-col-wide">
+        <section class="ph-cat">
+          <div class="ph-cat-label">Atividades e Modalidades</div>
+
+          <div class="ph-subcat">
+            <div class="ph-subcat-name">Musculação e <em>Cardio</em></div>
+            <ul class="ph-items">
+              <li>Personal 4:1</li>
+              <li>Fisioterapeuta do Club</li>
+            </ul>
+          </div>
+
+          <div class="ph-subcat">
+            <div class="ph-subcat-name">Ginásticas <em>Autorais Beat</em></div>
+            <ul class="ph-items ph-items-inline">
+              <li>Athletic · Camp · Muscle · Pump · Squad · Dance · Fight · Primal</li>
+            </ul>
+          </div>
+
+          <div class="ph-subcat">
+            <div class="ph-subcat-name">Ciclismo <em>Indoor</em></div>
+            <ul class="ph-items ph-items-inline">
+              <li>Spin Beat · Wattbike</li>
+            </ul>
+          </div>
+
+          <div class="ph-subcat">
+            <div class="ph-subcat-name">Yoga</div>
+          </div>
+
+          <div class="ph-subcat">
+            <div class="ph-subcat-name">LPF <em>Low Pressure Fitness</em></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="ph-col">
+        <section class="ph-cat">
+          <div class="ph-cat-label">Beat Care</div>
+          <div class="ph-cat-meta">Quatro créditos / mês</div>
+          <ul class="ph-items">
+            <li>Massagem</li>
+            <li>Escovista</li>
+            <li>Esmaltista</li>
+            <li>Barbearia</li>
+          </ul>
+        </section>
+
+        <section class="ph-cat">
+          <div class="ph-cat-label">Beat Recovery</div>
+          <ul class="ph-items">
+            <li>Termoterapia</li>
+            <li>Crioterapia</li>
+            <li>Sauna</li>
+            <li>Infravermelho</li>
+            <li>Bota de compressão</li>
+            <li>Cadeira de massagem</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="ph-col">
+        <section class="ph-cat">
+          <div class="ph-cat-label">Hospitalidades</div>
+          <ul class="ph-items">
+            <li>Shakes pré treino</li>
+            <li>Shakes pós treino</li>
+            <li>Snack Point</li>
+            <li>Café</li>
+            <li>Energético</li>
+            <li>Toalha de banho</li>
+            <li>Toalha de rosto</li>
+          </ul>
+        </section>
+
+        <section class="ph-cat">
+          <div class="ph-cat-label">Mapeamento e Avaliações</div>
+          <ul class="ph-items">
+            <li>Avaliação 360º</li>
+            <li>Bioimpedância Technogym</li>
+            <li>Teste de esforço de limiar</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <footer class="ph-footer ph-footer-center">
+      <div class="ph-oblig"><em>Membership obrigatório.</em></div>
+      <div class="ph-price">
+        <div class="ph-price-row">
+          <span class="ph-price-label">Assinatura</span>
+          <span class="ph-price-value">R$ 2.800 / mês</span>
+        </div>
+        <div class="ph-price-row">
+          <span class="ph-price-label">Anual</span>
+          <span class="ph-price-value">R$ 2.500 / mês</span>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- SLIDE 29 · THE ONE (com preço) · plano comercial tipográfico (5 categorias) -->
 
   <section class="slide plan-hero plan-unified plan-grouped" id="s24" data-slide="24">
     <header class="ph-header">
@@ -8367,7 +8610,109 @@ body.overview .overview-label{display:block}
     </footer>
   </section>
 
-  <!-- SLIDE 25 · LIFE CODE · protocolo como hero, mapeamento + ilimitados na coluna -->
+  <!-- SLIDE 25A · LIFE CODE (sem preço) · versão de apresentação · sem fricção comercial -->
+
+  <section class="slide plan-hero plan-unified plan-grouped lc-tinted lc-layout no-pricing" id="s25-noprice" data-slide="s25-noprice">
+    <svg class="ph-sigilo" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="currentColor" stroke-width="1.4" stroke-linecap="square" fill="none">
+        <line x1="36" y1="20" x2="36" y2="60"/>
+        <line x1="56" y1="20" x2="56" y2="60"/>
+        <line x1="76" y1="20" x2="76" y2="60"/>
+        <line x1="96" y1="20" x2="96" y2="60"/>
+        <line x1="116" y1="20" x2="116" y2="60"/>
+        <line x1="72" y1="10" x2="80" y2="10"/>
+        <line x1="76" y1="6" x2="76" y2="14"/>
+      </g>
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" text-anchor="middle" letter-spacing="1.6">
+        <text x="36" y="80">M</text><text x="56" y="80">G</text><text x="76" y="80">N</text><text x="96" y="80">F</text><text x="116" y="80">R</text>
+      </g>
+    </svg>
+
+    <header class="ph-header">
+      <div class="ph-selo">Life Code · Método</div>
+      <h2 class="ph-title">Life <em>Code</em>.</h2>
+      <p class="ph-anchor">Tudo do The One, <em>elevado pelo método</em>.</p>
+      <div class="ph-filete" aria-hidden="true"></div>
+    </header>
+
+    <div class="ph-herdado-callout">
+      <span class="ph-herdado-label">Herdado do The One</span>
+      <p class="ph-herdado-line">Musculação e Cardio · Ginásticas Autorais Beat · Ciclismo Indoor · Yoga · Hospitalidades · Beat Recovery</p>
+    </div>
+
+    <div class="ph-groups">
+      <div class="ph-col ph-col-hero">
+        <section class="ph-cat ph-cat-hero">
+          <div class="ph-cat-label">Protocolo Life Code</div>
+          <ol class="ph-items-list">
+            <li>
+              <div class="ph-lc-name">Personal Individual <em>1:1</em></div>
+              <div class="ph-lc-meta">3x a 6x por semana</div>
+              <p class="ph-lc-desc">Cuidado personalizado do seu treinamento, conduzido por um profissional dedicado.</p>
+            </li>
+            <li>
+              <div class="ph-lc-name">Médico <em>Beat Club</em></div>
+              <p class="ph-lc-desc">Autoridade, segurança e qualidade. Atende, pede exames e cuida da sua saúde no dia a dia.</p>
+            </li>
+            <li>
+              <div class="ph-lc-name">Nutricionista <em>Beat Club</em></div>
+              <p class="ph-lc-desc">Protocolo nutricional personalizado, integrado ao método.</p>
+            </li>
+            <li>
+              <div class="ph-lc-name">Coach <em>Life Code</em></div>
+              <p class="ph-lc-desc">Sincroniza tudo a serviço da sua longevidade saudável.</p>
+            </li>
+          </ol>
+        </section>
+      </div>
+
+      <div class="ph-col">
+        <section class="ph-cat ph-cat-sub">
+          <div class="ph-cat-label">Mapeamento</div>
+          <ul class="ph-items-list">
+            <li>
+              <div class="ph-lc-name">Teste <em>Genético</em></div>
+              <div class="ph-lc-meta">Incluso no plano</div>
+            </li>
+            <li>
+              <div class="ph-lc-name">Beat <em>Ring</em></div>
+              <div class="ph-lc-meta">Incluso no plano</div>
+            </li>
+            <li>
+              <div class="ph-lc-name">Avaliação <em>360º</em></div>
+              <div class="ph-lc-meta">Bioimpedância Technogym · Mensal</div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="ph-cat ph-cat-quick">
+          <div class="ph-cat-label">Beat Care <span class="ph-ilimitado">Ilimitado</span></div>
+          <div class="ph-quick-line">Massagem · Escovista · Esmaltista · Barbearia</div>
+        </section>
+
+        <section class="ph-cat ph-cat-quick">
+          <div class="ph-cat-label">Pilates <span class="ph-ilimitado">Ilimitado</span></div>
+          <div class="ph-quick-line">Sessões em grupo · Atendimento individual</div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="ph-footer ph-footer-center">
+      <div class="ph-oblig"><em>Membership obrigatório.</em></div>
+      <div class="ph-price">
+        <div class="ph-price-row">
+          <span class="ph-price-label">Assinatura</span>
+          <span class="ph-price-value">R$ 4.800 / mês</span>
+        </div>
+        <div class="ph-price-row">
+          <span class="ph-price-label">Anual</span>
+          <span class="ph-price-value">R$ 4.200 / mês</span>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- SLIDE 25 · LIFE CODE (com preço) · protocolo como hero, mapeamento + ilimitados na coluna -->
 
   <section class="slide plan-hero plan-unified plan-grouped lc-tinted lc-layout" id="s25" data-slide="25">
     <svg class="ph-sigilo" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -8449,6 +8794,7 @@ body.overview .overview-label{display:block}
 
         <section class="ph-cat ph-cat-quick">
           <div class="ph-cat-label">Pilates <span class="ph-ilimitado">Ilimitado</span></div>
+          <div class="ph-quick-line">Sessões em grupo · Atendimento individual</div>
         </section>
       </div>
     </div>
@@ -8468,78 +8814,16 @@ body.overview .overview-label{display:block}
     </footer>
   </section>
 
-  <!-- SLIDE 26 · FOUNDERS · Processo de ativação · sub-marca Founders Collection -->
+  <!-- SLIDE 27 · CARTA DE MEMBERSHIP · simulação do título ATIVO · pitch de fechamento
+       (Posicionado ANTES do slide "Founders Processo" no fluxo do deck.) -->
 
-  <section class="slide founders-processo" id="s-founders-processo" data-slide="s-founders-processo">
-    <div class="cr-frame" aria-hidden="true"></div>
-
-    <header class="cr-header">
-      <p class="cr-eyebrow"><span>Membership</span><span class="sep" aria-hidden="true"></span><span>Lote Fundador</span></p>
-      <h1 class="cr-title">The <em>Founders</em>.</h1>
-      <p class="cr-subtitle">Os cem membros que <em>originam o Club</em>. O Membership mais raro.</p>
-    </header>
-
-    <main class="fp-body">
-      <section class="fp-timeline-section">
-        <p class="fp-section-head">Processo de ativação</p>
-        <ol class="fp-timeline">
-          <li class="fp-step fp-step-active">
-            <span class="fp-step-tag">Comece aqui</span>
-            <div class="fp-step-num">01</div>
-            <h3 class="fp-step-name">Carta de <em>Reserva</em></h3>
-            <p class="fp-step-desc">Separa seu acesso. <em>Anterior ao contrato.</em></p>
-          </li>
-          <li class="fp-step">
-            <span class="fp-step-tag" aria-hidden="true"></span>
-            <div class="fp-step-num">02</div>
-            <h3 class="fp-step-name">Emissão do <em>Membership</em></h3>
-            <p class="fp-step-desc">Seu número entra em seu nome, <em>na confirmação do pagamento</em>.</p>
-          </li>
-          <li class="fp-step">
-            <span class="fp-step-tag" aria-hidden="true"></span>
-            <div class="fp-step-num">03</div>
-            <h3 class="fp-step-name">Plano e <em>pagamento</em></h3>
-            <p class="fp-step-desc">The One ou Life Code. Mensalidade <em>após a inauguração</em>.</p>
-          </li>
-          <li class="fp-step">
-            <span class="fp-step-tag" aria-hidden="true"></span>
-            <div class="fp-step-num">04</div>
-            <h3 class="fp-step-name">Vida no <em>Club</em></h3>
-            <p class="fp-step-desc">Você vive como Founder. <em>Para sempre.</em></p>
-          </li>
-        </ol>
-      </section>
-
-      <section class="fp-pillars-section">
-        <p class="fp-section-head">Por que Founders</p>
-        <ul class="fp-pillars">
-          <li class="fp-pillar">
-            <span class="fp-pillar-mark">·</span>
-            <span class="fp-pillar-text">Cem nomes. <em>Uma única vez na história do Club.</em></span>
-          </li>
-          <li class="fp-pillar">
-            <span class="fp-pillar-mark">·</span>
-            <span class="fp-pillar-text">O lote de <em>menor investimento</em>.</span>
-          </li>
-          <li class="fp-pillar">
-            <span class="fp-pillar-mark">·</span>
-            <span class="fp-pillar-text"><em>Benefícios que não voltam:</em> transferibilidade, primeira recusa nos lotes seguintes, kit numerado, coleções abertas antes dos demais.</span>
-          </li>
-        </ul>
-      </section>
-    </main>
-
-    <footer class="cr-closure">
-      <div class="cr-closure-rule" aria-hidden="true">
-        <span class="line"></span>
-        <span class="diamond"></span>
-        <span class="line"></span>
-      </div>
-    </footer>
-  </section>
-
-  <!-- SLIDE 27 · CARTA DE RESERVA · título ativo de Membership · sub-marca Founders Collection -->
-
+  <!-- ============================================================
+       ARQUIVO · slide "Carta de Reserva" original preservado como bloco
+       comentado para reuso fora do deck (peça à parte). O fluxo da
+       apresentação foi substituído pelo slide "Carta de Membership"
+       logo abaixo. Para reativar: remover o wrapper de comentário.
+       ============================================================ -->
+  <!--
   <section class="slide carta-titulo" id="s-carta-reserva" data-slide="s-carta-reserva">
     <div class="cr-frame" aria-hidden="true"></div>
     <div class="ct-watermark" aria-hidden="true"><span class="ct-watermark-glyph">Nº</span></div>
@@ -8610,7 +8894,7 @@ body.overview .overview-label{display:block}
             <p class="ct-submit-helper">Confirmaremos por contato em até 24h. A Carta oficial é emitida em seguida.</p>
             <button type="submit" class="ct-submit" id="ct-reservar">
               <span class="ct-submit-text">Reservar</span>
-              <span class="ct-submit-arrow" aria-hidden="true">→</span>
+              <span class="ct-submit-arrow" aria-hidden="true">&rarr;</span>
             </button>
           </div>
         </form>
@@ -8629,6 +8913,167 @@ body.overview .overview-label{display:block}
         <span class="line"></span>
       </div>
       <p class="cr-statement">Reserve hoje. <em>Founders são cem, em uma única edição.</em></p>
+    </footer>
+  </section>
+  -->
+
+  <section class="slide carta-titulo carta-membership" id="s-carta-membership" data-slide="s-carta-membership">
+    <div class="cr-frame" aria-hidden="true"></div>
+    <div class="ct-watermark" aria-hidden="true"><span class="ct-watermark-glyph">Nº</span></div>
+
+    <header class="cr-header">
+      <p class="cr-eyebrow"><span>Título vitalício</span><span class="sep" aria-hidden="true"></span><span>Numerado</span><span class="sep" aria-hidden="true"></span><span>Edição Founders</span></p>
+      <h1 class="cr-title">Carta de <em>Membership</em>.</h1>
+      <p class="cr-subtitle">Seu <em>nome</em>. Seu <em>número</em>. Sua <em>edição</em>.</p>
+    </header>
+
+    <main class="ct-body">
+      <article class="ct-card">
+        <p class="ct-card-rotulo">
+          <span>Membership</span>
+          <span class="ct-card-rotulo-diamond" aria-hidden="true"></span>
+          <em>The Founders</em>
+        </p>
+
+        <form class="ct-form" id="ct-membership-form" novalidate>
+          <div class="ct-fields">
+            <div class="ct-field ct-field-name">
+              <label class="ct-field-label" for="ct-input-name">O titular</label>
+              <input class="ct-input ct-input-name ct-input-empty" id="ct-input-name" name="name"
+                     type="text" placeholder="aguarda o titular" autocomplete="name"
+                     spellcheck="false" maxlength="80">
+              <span class="ct-field-line" aria-hidden="true"></span>
+            </div>
+            <div class="ct-field ct-field-num">
+              <label class="ct-field-label" for="ct-input-num">O número</label>
+              <span class="ct-num-row">
+                <span class="ct-field-no" aria-hidden="true">Nº</span>
+                <span class="ct-num-control">
+                  <input class="ct-input ct-input-num ct-input-empty" id="ct-input-num" name="number"
+                         type="text" inputmode="numeric" pattern="[0-9]*"
+                         value="" placeholder="—" maxlength="3" aria-label="Número do Founder, de 001 a 100">
+                  <span class="ct-num-spin" aria-hidden="false">
+                    <button type="button" class="ct-num-spin-btn" data-dir="up" aria-label="Próximo número">
+                      <svg viewBox="0 0 14 9" aria-hidden="true"><path d="M1 8 L7 1 L13 8"/></svg>
+                    </button>
+                    <button type="button" class="ct-num-spin-btn" data-dir="down" aria-label="Número anterior">
+                      <svg viewBox="0 0 14 9" aria-hidden="true"><path d="M1 1 L7 8 L13 1"/></svg>
+                    </button>
+                  </span>
+                </span>
+                <span class="ct-field-divider" aria-hidden="true">/</span>
+                <span class="ct-field-total">100</span>
+              </span>
+              <span class="ct-field-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="ct-card-validity">
+            <div class="ct-validity-line">
+              <span class="ct-validity-rule" aria-hidden="true"></span>
+              <span class="ct-validity-text">Lote <em>01 · Founders</em>.</span>
+            </div>
+            <div class="ct-validity-line">
+              <span class="ct-validity-rule" aria-hidden="true"></span>
+              <span class="ct-validity-text">Vigência <em>vitalícia enquanto Founder</em>.</span>
+            </div>
+          </div>
+
+          <p class="ct-card-disclaimer">
+            Esta Carta certifica a condição de <em>Founder</em> do titular e o número que carrega. Direitos, benefícios e prerrogativas vitalícios da edição fundadores, conforme contrato de adesão.
+          </p>
+
+          <!-- Timbre do emissor · lockup tipográfico, espelha o ct-card-rotulo do topo -->
+          <p class="ct-signature" aria-hidden="true">
+            <span>Beat Life Club</span>
+            <span class="ct-signature-diamond" aria-hidden="true"></span>
+            <em>Edição Founders</em>
+          </p>
+
+          <div class="ct-submit-row">
+            <p class="ct-submit-helper">Bem-vindo(a) ao Beat Life Club. <em>Seu lugar te espera no estúdio.</em></p>
+            <button type="submit" class="ct-submit" id="ct-ativar">
+              <span class="ct-submit-text">Ativar</span>
+              <span class="ct-submit-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+        </form>
+      </article>
+    </main>
+
+    <footer class="cr-closure">
+      <p class="cr-statement">Ative hoje. <em>Founders são cem, em uma única edição.</em></p>
+    </footer>
+  </section>
+
+  <!-- SLIDE 26 · FOUNDERS · Processo de ativação · sub-marca Founders Collection
+       (Movido para APÓS o slide "Carta de Membership" no fluxo do deck.) -->
+
+  <section class="slide founders-processo" id="s-founders-processo" data-slide="s-founders-processo">
+    <div class="cr-frame" aria-hidden="true"></div>
+
+    <header class="cr-header">
+      <p class="cr-eyebrow"><span>Membership</span><span class="sep" aria-hidden="true"></span><span>Lote Fundador</span></p>
+      <h1 class="cr-title">The <em>Founders</em>.</h1>
+      <p class="cr-subtitle">Os cem membros que <em>originam o Club</em>. O Membership mais raro.</p>
+    </header>
+
+    <main class="fp-body">
+      <section class="fp-timeline-section">
+        <p class="fp-section-head">Processo de ativação</p>
+        <ol class="fp-timeline">
+          <li class="fp-step fp-step-active">
+            <span class="fp-step-tag">Comece aqui</span>
+            <div class="fp-step-num">01</div>
+            <h3 class="fp-step-name">Carta de <em>Reserva</em></h3>
+            <p class="fp-step-desc">Separa seu acesso. <em>Anterior ao contrato.</em></p>
+          </li>
+          <li class="fp-step">
+            <span class="fp-step-tag" aria-hidden="true"></span>
+            <div class="fp-step-num">02</div>
+            <h3 class="fp-step-name">Emissão do <em>Membership</em></h3>
+            <p class="fp-step-desc">Seu número entra em seu nome, <em>na confirmação do pagamento</em>.</p>
+          </li>
+          <li class="fp-step">
+            <span class="fp-step-tag" aria-hidden="true"></span>
+            <div class="fp-step-num">03</div>
+            <h3 class="fp-step-name">Plano e <em>pagamento</em></h3>
+            <p class="fp-step-desc">The One ou Life Code. Mensalidade <em>após a inauguração</em>.</p>
+          </li>
+          <li class="fp-step">
+            <span class="fp-step-tag" aria-hidden="true"></span>
+            <div class="fp-step-num">04</div>
+            <h3 class="fp-step-name">Vida no <em>Club</em></h3>
+            <p class="fp-step-desc">Você vive como Founder. <em>Para sempre.</em></p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fp-pillars-section">
+        <p class="fp-section-head">Por que Founders</p>
+        <ul class="fp-pillars">
+          <li class="fp-pillar">
+            <span class="fp-pillar-mark">·</span>
+            <span class="fp-pillar-text">Cem nomes. <em>Uma única vez na história do Club.</em></span>
+          </li>
+          <li class="fp-pillar">
+            <span class="fp-pillar-mark">·</span>
+            <span class="fp-pillar-text">O lote de <em>menor investimento</em>.</span>
+          </li>
+          <li class="fp-pillar">
+            <span class="fp-pillar-mark">·</span>
+            <span class="fp-pillar-text"><em>Benefícios que não voltam:</em> transferibilidade, primeira recusa nos lotes seguintes, kit numerado, coleções abertas antes dos demais.</span>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="cr-closure">
+      <div class="cr-closure-rule" aria-hidden="true">
+        <span class="line"></span>
+        <span class="diamond"></span>
+        <span class="line"></span>
+      </div>
     </footer>
   </section>
 
@@ -9017,66 +9462,75 @@ body.overview .overview-label{display:block}
   window.addEventListener('hashchange',fromHash);
   go(i);
 
-  // Carta de Reserva · interacao do formulario (spinner numerico + submit)
+  // Carta de Membership · interacao do formulario + carimbo de data dinamica
+  // (Bloco "ct-reserva-form" foi arquivado em comentario · pitch agora usa Membership ativo)
   (()=>{
-    const form=document.getElementById('ct-reserva-form');
+    const form=document.getElementById('ct-membership-form');
     if(!form)return;
     const nameInput=document.getElementById('ct-input-name');
     const numInput=document.getElementById('ct-input-num');
-    const submitBtn=document.getElementById('ct-reservar');
+    const submitBtn=document.getElementById('ct-ativar');
     if(!nameInput||!numInput||!submitBtn)return;
 
     const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
     const fmt=n=>String(clamp(n,1,100)).padStart(3,'0');
+    // Retorna null quando vazio · preserva estado de "aguardando preenchimento"
     const getNum=()=>{
       const v=parseInt(numInput.value,10);
-      return isNaN(v)||v<1?1:v;
+      return isNaN(v)?null:v;
     };
 
     form.querySelectorAll('.ct-num-spin-btn').forEach(btn=>{
       btn.addEventListener('click',()=>{
         const dir=btn.dataset.dir==='up'?1:-1;
-        numInput.value=fmt(getNum()+dir);
+        const cur=getNum();
+        numInput.value=cur===null?'001':fmt(cur+dir);
       });
     });
 
     numInput.addEventListener('input',()=>{
       numInput.value=numInput.value.replace(/[^0-9]/g,'').slice(0,3);
     });
-    numInput.addEventListener('blur',()=>{numInput.value=fmt(getNum())});
+    numInput.addEventListener('blur',()=>{
+      // Vazio permanece vazio · so formata quando ha valor
+      const v=getNum();
+      if(v!==null) numInput.value=fmt(v);
+    });
     numInput.addEventListener('focus',()=>{
-      // Selecionar tudo facilita troca rapida do numero
       requestAnimationFrame(()=>numInput.select());
     });
     numInput.addEventListener('keydown',(e)=>{
-      if(e.key==='ArrowUp'){e.preventDefault();numInput.value=fmt(getNum()+1)}
-      if(e.key==='ArrowDown'){e.preventDefault();numInput.value=fmt(getNum()-1)}
+      if(e.key==='ArrowUp'){e.preventDefault();const c=getNum();numInput.value=c===null?'001':fmt(c+1);}
+      if(e.key==='ArrowDown'){e.preventDefault();const c=getNum();numInput.value=c===null?'001':fmt(c-1);}
     });
 
     form.addEventListener('submit',(e)=>{
       e.preventDefault();
       const name=nameInput.value.trim();
-      const number=fmt(getNum());
+      const num=getNum();
       if(!name){
         nameInput.focus();
         nameInput.classList.add('ct-input-error');
         setTimeout(()=>nameInput.classList.remove('ct-input-error'),1400);
         return;
       }
+      if(num===null){
+        numInput.focus();
+        numInput.classList.add('ct-input-error');
+        setTimeout(()=>numInput.classList.remove('ct-input-error'),1400);
+        return;
+      }
 
-      // Por enquanto: feedback visual + log estruturado.
-      // Futuro: gerar a Carta oficial em PDF (ja temos o template em
-      // carta-de-reserva-a4.html), preencher os campos e baixar/enviar.
-      console.log('[Carta de Reserva] Reserva solicitada:',{
+      console.log('[Carta de Membership] Ativacao solicitada:',{
         name,
-        number,
+        number:fmt(num),
         timestamp:new Date().toISOString()
       });
 
       const txt=submitBtn.querySelector('.ct-submit-text');
       const original=txt.textContent;
       submitBtn.classList.add('is-success');
-      txt.textContent='Reservado';
+      txt.textContent='Ativado';
       submitBtn.disabled=true;
       setTimeout(()=>{
         submitBtn.classList.remove('is-success');
